@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Pine Handheld</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Pine POS — "The Pass" Theme
+   A restaurant runs on paper: tickets, chits, the rail at the
+   pass. This theme is built from that material instead of a
+   generic dark dashboard — warm ticket-paper surfaces, brass
+   and rust ink, a serif display face with real character, and
+   monospace numerals everywhere money or a ticket number shows.
+   Used by the Handheld and KDS frontends (POS terminal extends
+   these same tokens) so every screen in the building reads as
+   one product.
+   ============================================================ */
+:root{
+  /* ---- Paper surfaces (front-of-house: Handheld, POS) ---- */
+  --bg:#EDE6D6;
+  --surface:#F7F2E7;
+  --surface-2:#FBF8F1;
+  --surface-3:#F0E9D8;
+  --border:#D9CCA8;
+  --border-soft:#E4D9BB;
+  --ink:#2A2113;
+  --ink-soft:#6B5D44;
+  --ink-faint:#9C8E70;
+
+  --primary:#A8742B;
+  --primary-dark:#8A5C1E;
+  --primary-soft:rgba(168,116,43,.14);
+  --on-accent:#FBF6EC;
+  --teal:#3E6B4F;
+  --teal-dark:#2E5039;
+  --teal-soft:rgba(62,107,79,.14);
+
+  --success:#3E7B4F;
+  --success-soft:rgba(62,123,79,.14);
+  --warning:#B07A1E;
+  --warning-soft:rgba(176,122,30,.14);
+  --danger:#B6452C;
+  --danger-soft:rgba(182,69,44,.13);
+  --violet:#7A5FA8;
+  --violet-soft:rgba(122,95,168,.13);
+
+  --shadow-sm:0 1px 2px rgba(40,28,10,.10);
+  --shadow-md:0 10px 24px rgba(40,28,10,.14);
+  --shadow-lg:0 22px 48px rgba(30,20,8,.22);
+
+  --r-sm:3px;
+  --r-md:5px;
+  --r-lg:8px;
+  --r-xl:14px;
+
+  --font-display:'Fraunces',serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+html,body{height:100%;}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+}
+button{font-family:inherit; cursor:pointer;}
+input,select,textarea{font-family:inherit;}
+::-webkit-scrollbar{width:8px; height:8px;}
+::-webkit-scrollbar-thumb{background:var(--border); border-radius:8px;}
+::-webkit-scrollbar-track{background:transparent;}
+a{color:inherit;}
+.hidden{display:none !important;}
+:focus-visible{outline:2px solid var(--primary); outline-offset:2px;}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  border:1.5px solid transparent; border-radius:var(--r-md); padding:11px 18px;
+  font-size:13.5px; font-weight:700; transition:.12s; white-space:nowrap;
+  font-family:var(--font-body);
+}
+.btn svg{width:16px; height:16px;}
+.btn-primary{background:var(--primary); color:var(--on-accent); box-shadow:0 1px 0 rgba(255,255,255,.18) inset, var(--shadow-sm);}
+.btn-primary:hover{background:var(--primary-dark);}
+.btn-secondary{background:var(--surface-2); color:var(--ink); border-color:var(--border);}
+.btn-secondary:hover{background:var(--surface-3);}
+.btn-teal{background:var(--teal); color:var(--on-accent);}
+.btn-teal:hover{background:var(--teal-dark);}
+.btn-danger{background:var(--danger-soft); color:var(--danger);}
+.btn-danger:hover{background:var(--danger); color:var(--on-accent);}
+.btn-lg{padding:14px 22px; font-size:14.5px;}
+.btn-block{width:100%;}
+.btn:disabled{opacity:.45; cursor:not-allowed;}
+
+/* ---------- Badges (read like a rubber ticket stamp) ---------- */
+.badge{
+  display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border-radius:3px;
+  font-size:11px; font-weight:700; letter-spacing:.03em; font-family:var(--font-mono);
+  text-transform:uppercase; border:1px solid transparent;
+}
+.badge-blue{background:var(--primary-soft); color:var(--primary-dark); border-color:rgba(168,116,43,.25);}
+.badge-green{background:var(--success-soft); color:var(--success); border-color:rgba(62,123,79,.25);}
+.badge-red{background:var(--danger-soft); color:var(--danger); border-color:rgba(182,69,44,.25);}
+.badge-amber{background:var(--warning-soft); color:var(--warning); border-color:rgba(176,122,30,.25);}
+.badge-teal{background:var(--teal-soft); color:var(--teal-dark); border-color:rgba(62,107,79,.25);}
+.badge-violet{background:var(--violet-soft); color:var(--violet); border-color:rgba(122,95,168,.25);}
+.badge-gray{background:var(--surface-3); color:var(--ink-soft); border-color:var(--border-soft);}
+
+/* ---------- Panels / cards ---------- */
+.panel{background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--r-lg); box-shadow:var(--shadow-sm);}
+.panel-pad{padding:18px;}
+
+/* ---------- Connection badge ---------- */
+.conn-badge{
+  display:flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px;
+  border:1px solid var(--border); background:var(--surface-2); font-size:11px; font-weight:700;
+  font-family:var(--font-mono);
+  color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em; transition:.15s;
+}
+.conn-badge .conn-dot{width:7px; height:7px; border-radius:50%; background:var(--success); box-shadow:0 0 0 3px var(--success-soft);}
+.conn-badge.offline{color:var(--danger); border-color:var(--danger);}
+.conn-badge.offline .conn-dot{background:var(--danger); box-shadow:0 0 0 3px var(--danger-soft); animation:connPulse 1s infinite;}
+@keyframes connPulse{0%,100%{opacity:1} 50%{opacity:.3}}
+
+/* ---------- Toasts ---------- */
+#toast-root{position:fixed; bottom:20px; right:20px; z-index:700; display:flex; flex-direction:column; gap:10px; align-items:flex-end;}
+.toast-msg{
+  background:var(--ink); color:var(--surface-2); border:1px solid var(--ink); padding:13px 20px; border-radius:var(--r-md); font-size:13.5px; font-weight:600;
+  box-shadow:var(--shadow-lg); display:flex; align-items:center; gap:10px; animation:toastIn .25s ease;
+}
+.toast-msg svg{width:16px; height:16px; color:var(--teal-soft); flex-shrink:0;}
+@keyframes toastIn{from{opacity:0; transform:translateY(12px)} to{opacity:1; transform:translateY(0)}}
+
+/* ---------- Numpad (used by Handheld login) ---------- */
+.numpad{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;}
+.numkey{background:var(--surface-2); border:1.5px solid var(--border); border-radius:var(--r-md); color:var(--ink); font-family:var(--font-display); font-weight:600; font-size:21px; padding:16px 0; transition:.1s;}
+.numkey:active{background:var(--primary-soft); border-color:var(--primary);}
+.numkey.action{color:var(--ink-faint); font-size:12.5px; font-weight:600; display:flex; align-items:center; justify-content:center;}
+.numkey.action svg{width:15px; height:15px;}
+.pin-display{display:flex; gap:10px; justify-content:center; margin:18px 0;}
+.pin-dot{width:13px; height:13px; border-radius:50%; border:2px solid var(--border);}
+.pin-dot.filled{background:var(--primary); border-color:var(--primary);}
+.pin-dot.error{border-color:var(--danger); background:var(--danger);}
+
+/* ---------- Empty state ---------- */
+.empty-state{padding:36px 20px; text-align:center; color:var(--ink-faint);}
+.empty-state .h3{color:var(--ink-soft); margin-bottom:4px;}
+.h3{font-family:var(--font-display); font-weight:600; font-size:16px;}
+.muted{color:var(--ink-faint);}
+.mono{font-family:var(--font-mono);}
+
+/* ---------- Staff chip (login picker) ---------- */
+.staff-chip{
+  display:flex; align-items:center; gap:10px; padding:12px; border-radius:var(--r-md);
+  background:var(--surface-2); border:1.5px solid var(--border); text-align:left; transition:.12s; width:100%;
+}
+.staff-chip.active{border-color:var(--primary); background:var(--primary-soft);}
+.staff-chip .staff-avatar{width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:600; font-size:13px; color:#fff; flex-shrink:0;}
+.staff-chip .name{font-weight:700; font-size:13.5px;}
+.staff-chip .role{display:block; font-size:11px; font-weight:500; color:var(--ink-faint); margin-top:1px;}
+
+/* ---------- Bottom sheet ---------- */
+.sheet-overlay{position:fixed; inset:0; background:rgba(20,14,4,.45); z-index:600; display:flex; align-items:flex-end; justify-content:center;}
+.sheet{
+  background:var(--surface-2); border-radius:var(--r-xl) var(--r-xl) 0 0; border:1px solid var(--border-soft); border-bottom:none;
+  width:100%; max-width:520px; max-height:92vh; overflow-y:auto; box-shadow:var(--shadow-lg); animation:sheetIn .2s ease;
+}
+@keyframes sheetIn{from{transform:translateY(24px); opacity:0;} to{transform:translateY(0); opacity:1;}}
+.sheet-head{padding:16px 18px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-soft); position:sticky; top:0; background:var(--surface-2); z-index:1;}
+.sheet-body{padding:16px 18px;}
+.sheet-foot{padding:14px 18px; border-top:1px solid var(--border-soft); display:flex; gap:10px; position:sticky; bottom:0; background:var(--surface-2);}
+.sheet-close{width:34px; height:34px; border-radius:50%; background:var(--surface-3); border:none; color:var(--ink-soft); display:flex; align-items:center; justify-content:center;}
+.sheet-close svg{width:16px; height:16px;}
+
+/* ---------- Fields ---------- */
+.field{display:flex; flex-direction:column; gap:6px; margin-bottom:12px;}
+.field label{font-size:12px; font-weight:700; color:var(--ink-soft);}
+.field input, .field select, .field textarea{
+  background:var(--surface); border:1.5px solid var(--border); border-radius:var(--r-sm); padding:11px 12px;
+  font-size:14px; color:var(--ink); outline:none; transition:.12s;
+}
+.field input:focus, .field select:focus, .field textarea:focus{border-color:var(--primary);}
+.field-row{display:flex; gap:10px;}
+.field-row .field{flex:1;}
+
+/* ---------- Qty control ---------- */
+.qty-btn{width:32px; height:32px; border-radius:50%; border:1.5px solid var(--border); background:var(--surface); color:var(--ink); display:flex; align-items:center; justify-content:center; transition:.1s;}
+.qty-btn svg{width:14px; height:14px;}
+.qty-btn:hover{border-color:var(--primary); color:var(--primary);}
+
+/* ---------- Modifier options ---------- */
+.modopt-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px;}
+.modopt{background:var(--surface); color:var(--ink); border:1.5px solid var(--border); border-radius:var(--r-sm); padding:10px 12px; font-size:13px; font-weight:600; display:flex; justify-content:space-between; align-items:center; transition:.1s; text-align:left;}
+.modopt.selected{border-color:var(--primary); background:var(--primary-soft); color:var(--primary-dark);}
+.modopt .opt-price{font-size:11px; color:var(--ink-faint); font-family:var(--font-mono);}
+.modopt.selected .opt-price{color:var(--primary-dark);}
+.modgroup-title{display:flex; justify-content:space-between; align-items:center; font-size:12.5px; font-weight:700; margin-bottom:8px; color:var(--ink-soft);}
+.modgroup-title .req{font-size:10.5px; color:var(--danger); font-weight:700;}
+
+/* ---------- Tabs ---------- */
+.tabbar{display:flex; gap:8px; flex-wrap:wrap;}
+.tab{background:var(--surface-2); border:1.5px solid var(--border); color:var(--ink-soft); border-radius:999px; padding:9px 14px; font-size:12.5px; font-weight:700; display:flex; align-items:center; gap:6px; transition:.12s;}
+.tab svg{width:14px; height:14px;}
+.tab.active{background:var(--primary); border-color:var(--primary); color:var(--on-accent);}
+
+</style>
+<style>
+html,body{height:100%; overflow:hidden;}
+body{font-family:var(--font-body); background:var(--bg); color:var(--ink); font-size:14px;}
+
+/* ---------- Login ---------- */
+#login-screen{position:fixed; inset:0; z-index:500;
+  background:var(--bg);
+  background-image:
+    radial-gradient(ellipse 600px 300px at 100% 0%, rgba(168,116,43,.10), transparent 60%),
+    repeating-linear-gradient(transparent, transparent 38px, rgba(168,116,43,.05) 39px);
+  display:flex; flex-direction:column; padding:30px 20px; overflow-y:auto;}
+#login-screen .brand{display:flex; align-items:center; gap:10px; margin-bottom:26px;}
+#login-screen .brand .logo-badge{width:42px; height:42px; border-radius:6px; background:var(--ink); display:flex; align-items:center; justify-content:center; color:var(--surface-2); font-family:var(--font-display); font-weight:600; font-size:16px; box-shadow:var(--shadow-sm);}
+#login-screen .brand .title{font-family:var(--font-display); font-weight:600; font-size:18px;}
+#login-screen .brand .sub{font-size:11.5px; color:var(--ink-faint); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.04em;}
+#login-screen h1{font-family:var(--font-display); font-size:26px; font-weight:600; margin-bottom:4px; letter-spacing:-.01em;}
+#login-screen .lead{font-size:13px; color:var(--ink-faint); margin-bottom:20px;}
+#staff-picker{display:flex; flex-direction:column; gap:8px; margin-bottom:18px;}
+#login-error{color:var(--danger); font-size:12.5px; font-weight:700; min-height:18px; text-align:center; margin-bottom:6px;}
+#login-screen .login-foot{margin-top:auto; text-align:center; font-size:11px; color:var(--ink-faint); padding-top:14px; font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.04em;}
+
+.online-orders-panel{margin-top:18px; background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--r-lg); padding:14px 16px; box-shadow:var(--shadow-sm);}
+.oop-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
+.oop-head .h3{font-size:14px;}
+.oop-empty{display:flex; align-items:center; gap:8px; color:var(--ink-faint); font-size:12.5px;}
+.oop-empty svg{width:15px; height:15px; color:var(--success); flex-shrink:0;}
+.online-orders-grid{display:flex; flex-direction:column; gap:8px;}
+.online-order-card{background:var(--surface-2); border:1px solid var(--border-soft); border-radius:var(--r-md); padding:10px 12px;}
+.online-order-card .ooc-top{display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;}
+.online-order-card .ooc-time{font-size:11px; color:var(--ink-faint); font-family:var(--font-mono);}
+.online-order-card .ooc-customer{font-weight:700; font-size:13px;}
+.online-order-card .ooc-meta{font-size:11.5px; color:var(--ink-soft); margin-top:2px;}
+.platform-badge{font-size:10px; font-weight:800; padding:3px 8px; border-radius:3px; text-transform:uppercase; letter-spacing:.03em; font-family:var(--font-mono);}
+
+/* ---------- App shell ---------- */
+#app{display:none; flex-direction:column; height:100vh;}
+#app.active{display:flex;}
+.hh-header{
+  display:flex; align-items:center; justify-content:space-between; gap:10px; padding:14px 16px;
+  background:var(--surface); border-bottom:1.5px solid var(--ink); flex-shrink:0;
+}
+.hh-header .left{display:flex; align-items:center; gap:10px; min-width:0;}
+.hh-header .logo-badge{width:36px; height:36px; border-radius:6px; background:var(--ink); display:flex; align-items:center; justify-content:center; color:var(--surface-2); font-family:var(--font-display); font-weight:600; font-size:13px; flex-shrink:0;}
+.hh-header .title{font-family:var(--font-display); font-weight:600; font-size:17px;}
+.hh-header .sub{font-size:11px; color:var(--ink-faint);}
+.hh-header .right{display:flex; align-items:center; gap:8px; flex-shrink:0;}
+.hh-clockbtn{width:34px; height:34px; border-radius:50%; border:1px solid var(--border); background:var(--surface-2); color:var(--ink-soft); display:flex; align-items:center; justify-content:center;}
+.hh-clockbtn.off{border-color:var(--warning); color:var(--warning); background:var(--warning-soft);}
+.hh-clockbtn svg{width:16px; height:16px;}
+.hh-avatar{width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:600; font-size:12.5px; color:#fff; box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);}
+
+.hh-main{flex:1; overflow-y:auto; padding:14px 14px 90px;}
+.bottom-nav{
+  display:flex; border-top:1.5px solid var(--ink); background:var(--surface); flex-shrink:0;
+  position:fixed; bottom:0; left:0; right:0; padding-bottom:env(safe-area-inset-bottom);
+}
+.bottom-nav .nav-item{
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:10px 0 8px;
+  color:var(--ink-faint); font-size:10px; font-weight:700; position:relative;
+  font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.02em;
+}
+.bottom-nav .nav-item.active{color:var(--primary-dark);}
+.bottom-nav .nav-item svg{width:20px; height:20px;}
+.bottom-nav .nav-badge{position:absolute; top:5px; right:calc(50% - 18px); background:var(--danger); color:var(--on-accent); font-size:9px; font-weight:800; border-radius:8px; min-width:15px; height:15px; display:flex; align-items:center; justify-content:center; padding:0 3px;}
+
+/* ---------- Section headers ---------- */
+.hh-section{margin-bottom:18px;}
+.hh-section-title{font-family:var(--font-mono); font-weight:700; font-size:11.5px; color:var(--ink-soft); margin-bottom:8px; text-transform:uppercase; letter-spacing:.06em;}
+
+/* ---------- Tables ---------- */
+.hh-table-row{
+  width:100%; display:flex; align-items:center; gap:12px; padding:13px; border-radius:var(--r-md);
+  background:var(--surface); border:1.5px solid var(--border-soft); margin-bottom:8px; text-align:left; transition:.1s;
+}
+.hh-table-row.status-occupied{border-color:var(--primary); background:var(--primary-soft);}
+.hh-table-row.status-check{border-color:var(--warning); background:var(--warning-soft);}
+.hh-table-row.status-dirty{border-color:var(--ink-faint); background:var(--surface-3);}
+.hh-table-num{font-family:var(--font-display); font-weight:600; font-size:19px; width:34px; flex-shrink:0;}
+.hh-table-info{flex:1; min-width:0;}
+.hh-table-meta{font-size:11.5px; color:var(--ink-faint); font-weight:700;}
+.hh-table-sub{font-size:11px; margin-top:2px;}
+.hh-table-amt{font-family:var(--font-mono); font-weight:800; font-size:13px; margin-left:8px;}
+
+/* ---------- Order: ticket list (looks like a torn order chit) ---------- */
+.ticket-row{
+  width:100%; display:flex; align-items:center; gap:12px; padding:14px; border-radius:var(--r-md);
+  background:var(--surface); border:1px solid var(--border-soft); border-left:3px solid var(--primary);
+  margin-bottom:8px; text-align:left;
+}
+.ticket-row .tag{width:34px; height:34px; border-radius:var(--r-sm); background:var(--surface-3); display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-weight:800; font-size:12px; flex-shrink:0;}
+.ticket-row .mid{flex:1; min-width:0;}
+.ticket-row .mid .name{font-weight:700; font-size:13.5px;}
+.ticket-row .mid .sub{font-size:11.5px; color:var(--ink-faint); margin-top:1px;}
+.ticket-row .amt{font-family:var(--font-mono); font-weight:800; font-size:14px;}
+
+/* ---------- Order: menu ---------- */
+.hh-order-head{display:flex; align-items:center; gap:12px; margin-bottom:12px;}
+.btn-back{width:34px; height:34px; border-radius:50%; background:var(--surface-2); border:1px solid var(--border); color:var(--ink); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+.btn-back svg{width:16px; height:16px;}
+.cat-chips{display:flex; gap:8px; overflow-x:auto; padding-bottom:10px; margin-bottom:8px; scrollbar-width:none;}
+.cat-chips::-webkit-scrollbar{display:none;}
+.cat-chip{flex-shrink:0; background:var(--surface-2); border:1.5px solid var(--border); color:var(--ink-soft); border-radius:999px; padding:9px 14px; font-size:12.5px; font-weight:700; white-space:nowrap;}
+.cat-chip.active{background:var(--primary); border-color:var(--primary); color:var(--on-accent);}
+.menu-grid-2col{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+.menu-item-2col{background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--r-md); padding:12px; text-align:left; display:flex; flex-direction:column; gap:6px; min-height:88px;}
+.menu-item-2col.unavailable{opacity:.4;}
+.menu-item-2col .icon{font-size:24px;}
+.menu-item-2col .name{font-weight:700; font-size:12.5px; line-height:1.3;}
+.menu-item-2col .price{font-family:var(--font-mono); color:var(--primary-dark); font-weight:700; font-size:12.5px; margin-top:auto;}
+
+/* ---------- Cart bar ---------- */
+.cart-bar{
+  position:fixed; left:14px; right:14px; bottom:74px; z-index:50; background:var(--ink); color:var(--surface-2);
+  border-radius:var(--r-md); padding:13px 16px; display:flex; justify-content:space-between; align-items:center;
+  font-weight:700; font-size:13.5px; box-shadow:var(--shadow-lg);
+}
+
+/* ---------- Cart lines ---------- */
+.cart-line{padding:12px 0; border-bottom:1px dashed var(--border-soft);}
+.cart-line .top{display:flex; justify-content:space-between; gap:8px;}
+.cart-line .name{font-weight:700; font-size:13.5px;}
+.cart-line .price{font-family:var(--font-mono); font-weight:700; font-size:13.5px;}
+.cart-line .mods{font-size:11.5px; color:var(--ink-faint); margin-top:3px;}
+.cart-line .notes{font-size:11.5px; color:var(--danger); font-weight:700; margin-top:3px;}
+.cart-line .ctrl{display:flex; justify-content:space-between; align-items:center; margin-top:8px;}
+.cart-line .qty-ctrl{display:flex; align-items:center; gap:8px;}
+.cart-line .qty-ctrl .num{font-family:var(--font-mono); font-weight:700; min-width:18px; text-align:center;}
+.status-pill{font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; padding:3px 8px; border-radius:3px; font-family:var(--font-mono);}
+.status-pill.status-new{background:var(--surface-3); color:var(--ink-soft);}
+.status-pill.status-fired{background:var(--warning-soft); color:var(--warning);}
+.status-pill.status-ready{background:var(--teal-soft); color:var(--teal-dark);}
+.status-pill.status-served{background:var(--success-soft); color:var(--success);}
+
+.cart-totals{margin-top:6px;}
+.cart-totals .row{display:flex; justify-content:space-between; font-size:13px; padding:5px 0; color:var(--ink-soft); font-family:var(--font-mono);}
+.cart-totals .row.total{font-weight:800; font-size:16px; color:var(--ink); padding-top:10px; border-top:1px solid var(--border-soft); margin-top:4px; font-family:var(--font-display);}
+
+/* ---------- Kitchen ticket cards (handheld, single column) ---------- */
+.hh-ticket{background:var(--surface); border:1.5px solid var(--border-soft); border-radius:var(--r-lg); margin-bottom:14px; overflow:hidden; box-shadow:var(--shadow-sm);}
+.hh-ticket.warn{border-color:var(--warning);}
+.hh-ticket.late{border-color:var(--danger);}
+.hh-ticket .head{padding:12px 14px; display:flex; justify-content:space-between; align-items:center; background:var(--surface-3); border-bottom:1px dashed var(--border);}
+.hh-ticket .head .tname{font-family:var(--font-display); font-weight:600; font-size:17px;}
+.hh-ticket .head .tno{font-size:11px; color:var(--ink-faint); font-weight:700; font-family:var(--font-mono);}
+.hh-ticket .timer{font-family:var(--font-mono); font-weight:800; font-size:14px; padding:5px 10px; border-radius:3px;}
+.hh-ticket .timer.ok{color:var(--success); background:var(--success-soft);}
+.hh-ticket .timer.warn{color:var(--warning); background:var(--warning-soft);}
+.hh-ticket .timer.late{color:var(--danger); background:var(--danger-soft);}
+.hh-ticket .items{padding:10px 14px; display:flex; flex-direction:column; gap:10px;}
+.hh-ticket .item{display:flex; gap:10px; align-items:flex-start; font-size:13.5px;}
+.hh-ticket .item .q{font-family:var(--font-mono); font-weight:800; color:var(--primary-dark); min-width:24px;}
+.hh-ticket .item .body{flex:1;}
+.hh-ticket .item .nm{font-weight:700;}
+.hh-ticket .item .mods{font-size:11.5px; color:var(--ink-faint); margin-top:2px;}
+.hh-ticket .item .nts{font-size:11.5px; color:var(--danger); font-weight:700; margin-top:2px;}
+.hh-ticket .item.ready .body{text-decoration:line-through; opacity:.5;}
+.hh-ticket .foot{padding:12px 14px; border-top:1px solid var(--border-soft);}
+
+/* ---------- KPI grid ---------- */
+.kpi-2x2{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;}
+.kpi-tile{background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--r-md); padding:14px; box-shadow:var(--shadow-sm);}
+.kpi-tile .lbl{font-size:11px; color:var(--ink-faint); font-weight:700; font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.03em;}
+.kpi-tile .val{font-family:var(--font-display); font-weight:600; font-size:21px; margin-top:4px;}
+
+/* ---------- Misc ---------- */
+.empty-state{padding:40px 16px; text-align:center; color:var(--ink-faint);}
+.color-dot{display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px;}
+</style>
+</head>
+<body>
+
+<div id="login-screen">
+  <div class="brand"><div class="logo-badge">P</div><div><div class="title">Pine Handheld</div><div class="sub" id="login-restaurant"></div></div></div>
+  <h1>Welcome back</h1>
+  <div class="lead">Enter your 4-digit PIN to clock in.</div>
+  <div id="login-error"></div>
+  <div class="pin-display" id="pin-display">
+    <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+  </div>
+  <div class="numpad" id="numpad"></div>
+  <div class="online-orders-panel" id="online-orders-panel"></div>
+  <div class="login-foot">Pine Handheld · synced in real time with POS &amp; KDS</div>
+</div>
+
+<div id="app">
+  <header class="hh-header">
+    <div class="left">
+      <div class="logo-badge">P</div>
+      <div>
+        <div class="title" id="hh-title">Tables</div>
+        <div class="sub" id="hh-sub"></div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="conn-badge" id="conn-badge"><span class="conn-dot"></span><span class="conn-label">Live</span></div>
+      <button class="hh-clockbtn" id="clockout-btn"></button>
+      <div class="hh-avatar" id="hh-avatar"></div>
+    </div>
+  </header>
+  <main class="hh-main" id="hh-main"></main>
+  <div id="cart-bar-slot"></div>
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+</div>
+
+<div id="sheet-root"></div>
+<div id="toast-root"></div>
+
+<script>
+window.__SEED_STATE__ = {"restaurant":{"name":"The Riverside Bistro","address":"482 Harbor St, Seattle, WA 98101","phone":"(206) 555-0148","taxRate":0.0925,"receiptHeader":"The Riverside Bistro","receiptFooter":"Thank you for dining with us — see you again soon!","tipPresets":[0.18,0.2,0.25],"sections":["Main Dining","Patio","Bar"]},"currentStaff":null,"view":"dashboard","notifications":[{"id":1,"text":"Low stock alert: Salmon Fillet below par level","time":1783109074903,"type":"warning"},{"id":2,"text":"Online order #1049 received — Takeout","time":1783109854903,"type":"info"},{"id":3,"text":"Table 7 check has been open for 55 minutes","time":1783110214903,"type":"warning"}],"nextUid":1023,"nextOrderId":1058,"staff":[{"id":1,"name":"Maria Lopez","pin":"1234","role":"Manager","color":"#1B6FE0","hourlyRate":26,"clockedIn":true,"clockInTime":1783097794899,"permissions":["all"]},{"id":2,"name":"James Chen","pin":"2222","role":"Server","color":"#0FB6AC","hourlyRate":16,"clockedIn":true,"clockInTime":1783099594899,"permissions":["pos","tables"]},{"id":3,"name":"Aisha Patel","pin":"3333","role":"Server","color":"#E0922A","hourlyRate":16,"clockedIn":true,"clockInTime":1783103194899,"permissions":["pos","tables"]},{"id":4,"name":"Tom Reilly","pin":"4444","role":"Cook","color":"#E0473F","hourlyRate":19,"clockedIn":true,"clockInTime":1783095994899,"permissions":["kitchen"]},{"id":5,"name":"Sara Kim","pin":"5555","role":"Host","color":"#7C5CFC","hourlyRate":15,"clockedIn":false,"clockInTime":null,"permissions":["tables"]},{"id":6,"name":"Diego Ruiz","pin":"6666","role":"Bartender","color":"#1F9D55","hourlyRate":18,"clockedIn":true,"clockInTime":1783101394899,"permissions":["pos","tables"]},{"id":7,"name":"Priya Nair","pin":"7777","role":"Server","color":"#E0473F","hourlyRate":16,"clockedIn":false,"clockInTime":null,"permissions":["pos","tables"]},{"id":8,"name":"Owen Brooks","pin":"8888","role":"Cook","color":"#1452AD","hourlyRate":19,"clockedIn":false,"clockInTime":null,"permissions":["kitchen"]}],"modifierGroups":{"addons":{"name":"Add-ons","type":"multi","required":false,"options":[{"name":"Extra Cheese","price":1},{"name":"Bacon","price":1.5},{"name":"Avocado","price":1.5},{"name":"Fried Egg","price":1},{"name":"Sauteed Mushrooms","price":1}]},"temp":{"name":"Temperature","type":"single","required":true,"options":[{"name":"Rare","price":0},{"name":"Medium Rare","price":0},{"name":"Medium","price":0},{"name":"Medium Well","price":0},{"name":"Well Done","price":0}]},"dressing":{"name":"Dressing","type":"single","required":true,"options":[{"name":"Ranch","price":0},{"name":"Caesar","price":0},{"name":"Balsamic Vinaigrette","price":0},{"name":"Blue Cheese","price":0},{"name":"Oil & Vinegar","price":0}]},"pizzaSize":{"name":"Size","type":"single","required":true,"options":[{"name":"10\" Personal","price":0},{"name":"14\" Medium","price":4},{"name":"18\" Large","price":8}]},"spice":{"name":"Spice Level","type":"single","required":false,"options":[{"name":"Mild","price":0},{"name":"Medium","price":0},{"name":"Hot","price":0},{"name":"Extra Hot","price":0}]},"side":{"name":"Choice of Side","type":"single","required":true,"options":[{"name":"French Fries","price":0},{"name":"Side Salad","price":0},{"name":"Soup of the Day","price":1.5},{"name":"Sauteed Vegetables","price":0},{"name":"Mashed Potatoes","price":0}]},"bread":{"name":"Bread","type":"single","required":true,"options":[{"name":"Brioche Bun","price":0},{"name":"Multigrain","price":0},{"name":"Gluten-Free","price":1.5},{"name":"Lettuce Wrap","price":0}]},"espresso":{"name":"Milk Choice","type":"single","required":false,"options":[{"name":"Whole Milk","price":0},{"name":"Oat Milk","price":0.7},{"name":"Almond Milk","price":0.7},{"name":"Skim Milk","price":0}]}},"menu":{"categories":[{"id":"starters","name":"Starters","icon":"🥗","station":"Cold Line"},{"id":"salads","name":"Salads","icon":"🥬","station":"Cold Line"},{"id":"sandwiches","name":"Sandwiches","icon":"🥪","station":"Grill"},{"id":"entrees","name":"Entrées","icon":"🍽️","station":"Grill"},{"id":"pizza","name":"Pizza","icon":"🍕","station":"Pizza Oven"},{"id":"desserts","name":"Desserts","icon":"🍰","station":"Pastry"},{"id":"beverages","name":"Beverages","icon":"🥤","station":"Bar"},{"id":"cocktails","name":"Cocktails & Wine","icon":"🍷","station":"Bar"}],"items":[{"id":1,"category":"starters","name":"Crispy Calamari","price":13.5,"desc":"Lightly fried, served with lemon aioli","icon":"🦑","available":true,"modGroups":["spice"],"cost":3.8},{"id":2,"category":"starters","name":"Loaded Nachos","price":12,"desc":"Cheddar, jalapeños, pico, sour cream","icon":"🧀","available":true,"modGroups":["addons","spice"],"cost":3.1},{"id":3,"category":"starters","name":"Soup of the Day","price":7.5,"desc":"Chef's daily selection, ask your server","icon":"🥣","available":true,"modGroups":[],"cost":1.9},{"id":4,"category":"starters","name":"Garlic Bread","price":6.5,"desc":"Toasted baguette, herb butter, parmesan","icon":"🥖","available":true,"modGroups":[],"cost":1.4},{"id":5,"category":"starters","name":"Bruschetta Trio","price":10,"desc":"Tomato basil, mushroom, white bean","icon":"🍅","available":false,"modGroups":[],"cost":2.6},{"id":6,"category":"salads","name":"Caesar Salad","price":11,"desc":"Romaine, parmesan, croutons, caesar dressing","icon":"🥗","available":true,"modGroups":["addons","dressing"],"cost":2.4},{"id":7,"category":"salads","name":"Harvest Salad","price":12.5,"desc":"Mixed greens, apple, candied pecans, goat cheese","icon":"🥬","available":true,"modGroups":["addons","dressing"],"cost":3},{"id":8,"category":"salads","name":"Grilled Chicken Cobb","price":14.5,"desc":"Egg, bacon, avocado, blue cheese, tomato","icon":"🍗","available":true,"modGroups":["dressing"],"cost":4.2},{"id":9,"category":"sandwiches","name":"Classic Burger","price":14.5,"desc":"Brioche bun, lettuce, tomato, house sauce","icon":"🍔","available":true,"modGroups":["temp","addons","bread","side"],"cost":4.6},{"id":10,"category":"sandwiches","name":"Crispy Chicken Sandwich","price":13.5,"desc":"Buttermilk fried chicken, slaw, pickles","icon":"🍗","available":true,"modGroups":["spice","addons","side"],"cost":4},{"id":11,"category":"sandwiches","name":"Reuben","price":13,"desc":"Pastrami, swiss, sauerkraut, russian dressing","icon":"🥪","available":true,"modGroups":["side"],"cost":4.3},{"id":12,"category":"sandwiches","name":"Veggie Melt","price":12,"desc":"Roasted vegetables, provolone, pesto","icon":"🥪","available":true,"modGroups":["side","bread"],"cost":3},{"id":13,"category":"entrees","name":"Grilled Salmon","price":24,"desc":"Lemon butter, seasonal vegetables","icon":"🐟","available":true,"modGroups":["side"],"cost":8.7},{"id":14,"category":"entrees","name":"8oz Sirloin Steak","price":27.5,"desc":"Garlic herb butter, choice of side","icon":"🥩","available":true,"modGroups":["temp","side"],"cost":9.8},{"id":15,"category":"entrees","name":"Roast Chicken","price":19.5,"desc":"Half chicken, jus, choice of side","icon":"🍗","available":true,"modGroups":["side"],"cost":5.4},{"id":16,"category":"entrees","name":"Wild Mushroom Risotto","price":18,"desc":"Parmesan, white wine, truffle oil","icon":"🍚","available":true,"modGroups":[],"cost":4},{"id":17,"category":"entrees","name":"Fish & Chips","price":17.5,"desc":"Beer-battered cod, tartar sauce, fries","icon":"🍟","available":true,"modGroups":[],"cost":5},{"id":18,"category":"pizza","name":"Margherita","price":14,"desc":"San marzano tomato, fresh mozzarella, basil","icon":"🍕","available":true,"modGroups":["pizzaSize"],"cost":3.2},{"id":19,"category":"pizza","name":"Pepperoni","price":16,"desc":"Mozzarella, pepperoni, tomato sauce","icon":"🍕","available":true,"modGroups":["pizzaSize"],"cost":3.9},{"id":20,"category":"pizza","name":"BBQ Chicken","price":17,"desc":"Smoked gouda, red onion, cilantro","icon":"🍕","available":true,"modGroups":["pizzaSize"],"cost":4.3},{"id":21,"category":"pizza","name":"Veggie Supreme","price":15.5,"desc":"Peppers, mushroom, olives, onion","icon":"🍕","available":true,"modGroups":["pizzaSize"],"cost":3.6},{"id":22,"category":"desserts","name":"New York Cheesecake","price":8.5,"desc":"Graham crust, berry compote","icon":"🍰","available":true,"modGroups":[],"cost":1.9},{"id":23,"category":"desserts","name":"Molten Chocolate Cake","price":9.5,"desc":"Warm cake, vanilla ice cream","icon":"🍫","available":true,"modGroups":[],"cost":2.2},{"id":24,"category":"desserts","name":"Crème Brûlée","price":8,"desc":"Classic vanilla custard, caramelized sugar","icon":"🍮","available":true,"modGroups":[],"cost":1.7},{"id":25,"category":"beverages","name":"Fountain Soda","price":3.5,"desc":"Free refills","icon":"🥤","available":true,"modGroups":[],"cost":0.4},{"id":26,"category":"beverages","name":"Fresh Lemonade","price":4.5,"desc":"House-made, lightly sweet","icon":"🍋","available":true,"modGroups":[],"cost":0.8},{"id":27,"category":"beverages","name":"Iced Tea","price":3.5,"desc":"Black tea, unsweet or sweet","icon":"🧊","available":true,"modGroups":[],"cost":0.4},{"id":28,"category":"beverages","name":"Espresso / Latte","price":4.5,"desc":"Locally roasted beans","icon":"☕","available":true,"modGroups":["espresso"],"cost":1},{"id":29,"category":"cocktails","name":"Riverside Mule","price":12,"desc":"Vodka, ginger beer, lime","icon":"🍹","available":true,"modGroups":[],"cost":3},{"id":30,"category":"cocktails","name":"Classic Margarita","price":12.5,"desc":"Tequila, triple sec, lime","icon":"🍸","available":true,"modGroups":[],"cost":3.2},{"id":31,"category":"cocktails","name":"House Red / White","price":10,"desc":"Ask your server for today's pour","icon":"🍷","available":true,"modGroups":[],"cost":2.8},{"id":32,"category":"cocktails","name":"Draft Beer","price":7.5,"desc":"Rotating local taps","icon":"🍺","available":true,"modGroups":[],"cost":1.9}]},"tables":[{"id":1,"number":1,"seats":2,"shape":"round","section":"Main Dining","status":"available","x":10,"y":18},{"id":2,"number":2,"seats":2,"shape":"round","section":"Main Dining","status":"available","x":30,"y":18},{"id":3,"number":3,"seats":4,"shape":"square","section":"Main Dining","status":"occupied","x":54,"y":16,"orderId":1050},{"id":4,"number":4,"seats":4,"shape":"square","section":"Main Dining","status":"available","x":80,"y":16},{"id":5,"number":5,"seats":6,"shape":"rect","section":"Main Dining","status":"check","x":92,"y":55,"orderId":1051},{"id":6,"number":6,"seats":4,"shape":"square","section":"Main Dining","status":"available","x":54,"y":55},{"id":7,"number":7,"seats":4,"shape":"square","section":"Main Dining","status":"occupied","x":80,"y":55,"orderId":1052},{"id":8,"number":8,"seats":2,"shape":"round","section":"Main Dining","status":"available","x":10,"y":55},{"id":9,"number":9,"seats":8,"shape":"rect","section":"Main Dining","status":"dirty","x":30,"y":85},{"id":10,"number":10,"seats":4,"shape":"square","section":"Patio","status":"available","x":20,"y":25},{"id":11,"number":11,"seats":4,"shape":"square","section":"Patio","status":"available","x":50,"y":25},{"id":12,"number":12,"seats":2,"shape":"round","section":"Patio","status":"occupied","x":80,"y":25,"orderId":1053},{"id":13,"number":13,"seats":6,"shape":"rect","section":"Patio","status":"available","x":50,"y":70},{"id":14,"number":"B1","seats":1,"shape":"round","section":"Bar","status":"available","x":15,"y":35},{"id":15,"number":"B2","seats":1,"shape":"round","section":"Bar","status":"available","x":38,"y":35},{"id":16,"number":"B3","seats":1,"shape":"round","section":"Bar","status":"available","x":61,"y":35},{"id":17,"number":"B4","seats":1,"shape":"round","section":"Bar","status":"available","x":84,"y":35}],"orders":{"1050":{"id":1050,"tableId":3,"server":"James Chen","guests":4,"type":"dine-in","status":"open","items":[{"uid":"u1000","menuItemId":9,"name":"Classic Burger","icon":"🍔","basePrice":14.5,"modPrice":2.5,"qty":2,"mods":[{"group":"Temperature","name":"Medium","price":0},{"group":"Add-ons","name":"Bacon","price":1.5},{"group":"Add-ons","name":"Extra Cheese","price":1},{"group":"Bread","name":"Brioche Bun","price":0},{"group":"Choice of Side","name":"French Fries","price":0}],"notes":"","station":"Grill","status":"fired","firedAt":1783109854904},{"uid":"u1001","menuItemId":10,"name":"Crispy Chicken Sandwich","icon":"🍗","basePrice":13.5,"modPrice":0,"qty":1,"mods":[{"group":"Spice Level","name":"Medium","price":0},{"group":"Choice of Side","name":"Side Salad","price":0}],"notes":"no pickles","station":"Grill","status":"fired","firedAt":1783109614904},{"uid":"u1002","menuItemId":25,"name":"Fountain Soda","icon":"🥤","basePrice":3.5,"modPrice":0,"qty":4,"mods":[],"notes":"","station":"Bar","status":"served","firedAt":null},{"uid":"u1003","menuItemId":2,"name":"Loaded Nachos","icon":"🧀","basePrice":12,"modPrice":1,"qty":1,"mods":[{"group":"Add-ons","name":"Extra Cheese","price":1}],"notes":"","station":"Cold Line","status":"ready","firedAt":1783109494904}],"openedAt":1783108114904,"discount":0,"tip":0},"1051":{"id":1051,"tableId":5,"server":"Aisha Patel","guests":6,"type":"dine-in","status":"check","items":[{"uid":"u1004","menuItemId":14,"name":"8oz Sirloin Steak","icon":"🥩","basePrice":27.5,"modPrice":0,"qty":2,"mods":[{"group":"Temperature","name":"Medium Rare","price":0},{"group":"Choice of Side","name":"Mashed Potatoes","price":0}],"notes":"","station":"Grill","status":"served","firedAt":null},{"uid":"u1005","menuItemId":13,"name":"Grilled Salmon","icon":"🐟","basePrice":24,"modPrice":0,"qty":1,"mods":[{"group":"Choice of Side","name":"Sauteed Vegetables","price":0}],"notes":"","station":"Grill","status":"served","firedAt":null},{"uid":"u1006","menuItemId":16,"name":"Wild Mushroom Risotto","icon":"🍚","basePrice":18,"modPrice":0,"qty":1,"mods":[],"notes":"","station":"Grill","status":"served","firedAt":null},{"uid":"u1007","menuItemId":6,"name":"Caesar Salad","icon":"🥗","basePrice":11,"modPrice":0,"qty":2,"mods":[{"group":"Dressing","name":"Caesar","price":0}],"notes":"","station":"Cold Line","status":"served","firedAt":null},{"uid":"u1008","menuItemId":31,"name":"House Red / White","icon":"🍷","basePrice":10,"modPrice":0,"qty":3,"mods":[],"notes":"","station":"Bar","status":"served","firedAt":null},{"uid":"u1009","menuItemId":23,"name":"Molten Chocolate Cake","icon":"🍫","basePrice":9.5,"modPrice":0,"qty":2,"mods":[],"notes":"","station":"Pastry","status":"served","firedAt":null}],"openedAt":1783106914904,"discount":0,"tip":0},"1052":{"id":1052,"tableId":7,"server":"James Chen","guests":2,"type":"dine-in","status":"open","items":[{"uid":"u1010","menuItemId":18,"name":"Margherita","icon":"🍕","basePrice":14,"modPrice":4,"qty":1,"mods":[{"group":"Size","name":"14\" Medium","price":4}],"notes":"","station":"Pizza Oven","status":"new","firedAt":null},{"uid":"u1011","menuItemId":31,"name":"House Red / White","icon":"🍷","basePrice":10,"modPrice":0,"qty":2,"mods":[],"notes":"","station":"Bar","status":"fired","firedAt":1783110154904}],"openedAt":1783109734904,"discount":0,"tip":0},"1053":{"id":1053,"tableId":12,"server":"Diego Ruiz","guests":2,"type":"dine-in","status":"open","items":[{"uid":"u1012","menuItemId":12,"name":"Veggie Melt","icon":"🥪","basePrice":12,"modPrice":0,"qty":1,"mods":[{"group":"Choice of Side","name":"Side Salad","price":0},{"group":"Bread","name":"Multigrain","price":0}],"notes":"","station":"Grill","status":"fired","firedAt":1783110274904},{"uid":"u1013","menuItemId":27,"name":"Iced Tea","icon":"🧊","basePrice":3.5,"modPrice":0,"qty":2,"mods":[],"notes":"","station":"Bar","status":"served","firedAt":null}],"openedAt":1783109974904,"discount":0,"tip":0},"1054":{"id":1054,"tableId":null,"server":"Online","guests":1,"type":"takeout","status":"open","platform":"doordash","customerName":"Noah Davis","phone":"(206) 555-0177","items":[{"uid":"u1014","menuItemId":19,"name":"Pepperoni","icon":"🍕","basePrice":16,"modPrice":8,"qty":1,"mods":[{"group":"Size","name":"18\" Large","price":8}],"notes":"","station":"Pizza Oven","status":"fired","firedAt":1783109734904},{"uid":"u1015","menuItemId":25,"name":"Fountain Soda","icon":"🥤","basePrice":3.5,"modPrice":0,"qty":2,"mods":[],"notes":"","station":"Bar","status":"fired","firedAt":1783109734904}],"openedAt":1783109854904,"discount":0,"tip":0},"1055":{"id":1055,"tableId":null,"server":"Online","guests":1,"type":"takeout","status":"open","platform":"grubhub","customerName":"Olivia Bennett","phone":"(206) 555-0199","items":[{"uid":"u1016","menuItemId":12,"name":"Veggie Melt","icon":"🥪","basePrice":12,"modPrice":0,"qty":1,"mods":[{"group":"Choice of Side","name":"Side Salad","price":0},{"group":"Bread","name":"Multigrain","price":0}],"notes":"","station":"Grill","status":"new","firedAt":null},{"uid":"u1017","menuItemId":27,"name":"Iced Tea","icon":"🧊","basePrice":3.5,"modPrice":0,"qty":1,"mods":[],"notes":"","station":"Bar","status":"new","firedAt":null}],"openedAt":1783110154904,"discount":0,"tip":0},"1056":{"id":1056,"tableId":null,"server":"Online","guests":1,"type":"takeout","status":"open","platform":"ubereats","customerName":"Marcus Lee","phone":"(206) 555-0163","items":[{"uid":"u1018","menuItemId":18,"name":"Margherita","icon":"🍕","basePrice":14,"modPrice":4,"qty":1,"mods":[{"group":"Size","name":"14\" Medium","price":4}],"notes":"","station":"Pizza Oven","status":"fired","firedAt":1783110274904},{"uid":"u1019","menuItemId":23,"name":"Molten Chocolate Cake","icon":"🍫","basePrice":9.5,"modPrice":0,"qty":1,"mods":[],"notes":"","station":"Pastry","status":"fired","firedAt":1783110274904}],"openedAt":1783110274904,"discount":0,"tip":0},"1057":{"id":1057,"tableId":null,"server":"Online","guests":1,"type":"takeout","status":"open","platform":"website","customerName":"Sofia Martinez","phone":"(206) 555-0124","items":[{"uid":"u1020","menuItemId":6,"name":"Caesar Salad","icon":"🥗","basePrice":11,"modPrice":0,"qty":1,"mods":[{"group":"Dressing","name":"Caesar","price":0}],"notes":"","station":"Cold Line","status":"new","firedAt":null},{"uid":"u1021","menuItemId":16,"name":"Wild Mushroom Risotto","icon":"🍚","basePrice":18,"modPrice":0,"qty":1,"mods":[],"notes":"","station":"Grill","status":"new","firedAt":null},{"uid":"u1022","menuItemId":26,"name":"Fresh Lemonade","icon":"🍋","basePrice":4.5,"modPrice":0,"qty":1,"mods":[],"notes":"","station":"Bar","status":"new","firedAt":null}],"openedAt":1783110334904,"discount":0,"tip":0}},"completedOrders":[{"id":9014,"ts":1782558840000,"items":[{"name":"Pepperoni","category":"pizza","qty":1,"price":16},{"name":"Crispy Calamari","category":"starters","qty":1,"price":13.5}],"subtotal":29.5,"tax":2.72875,"tip":7.788981752749532,"total":40.017731752749526,"paymentMethod":"cash","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9012,"ts":1782559080000,"items":[{"name":"Wild Mushroom Risotto","category":"entrees","qty":1,"price":18},{"name":"Pepperoni","category":"pizza","qty":1,"price":16}],"subtotal":34,"tax":3.145,"tip":5.164048322942108,"total":42.30904832294211,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":101},{"id":9015,"ts":1782562140000,"items":[{"name":"Classic Burger","category":"sandwiches","qty":1,"price":14.5}],"subtotal":14.5,"tax":1.34125,"tip":2.381753268186003,"total":18.223003268186005,"paymentMethod":"cash","server":"Aisha Patel","status":"completed","refunds":[],"customerId":4,"settled":null,"batchId":null},{"id":9020,"ts":1782566640000,"items":[{"name":"Grilled Chicken Cobb","category":"salads","qty":1,"price":14.5}],"subtotal":14.5,"tax":1.34125,"tip":3.623390115299262,"total":19.46464011529926,"paymentMethod":"cash","server":"Priya Nair","status":"completed","refunds":[],"customerId":2,"settled":null,"batchId":null},{"id":9010,"ts":1782575640000,"items":[{"name":"Veggie Supreme","category":"pizza","qty":1,"price":15.5},{"name":"Harvest Salad","category":"salads","qty":1,"price":12.5}],"subtotal":28,"tax":2.59,"tip":6.886545208431779,"total":37.47654520843178,"paymentMethod":"cash","server":"James Chen","status":"completed","refunds":[],"customerId":2,"settled":null,"batchId":null},{"id":9002,"ts":1782576300000,"items":[{"name":"Molten Chocolate Cake","category":"desserts","qty":1,"price":9.5}],"subtotal":9.5,"tax":0.87875,"tip":2.04800691885408,"total":12.42675691885408,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":2,"settled":true,"batchId":101},{"id":9013,"ts":1782577320000,"items":[{"name":"Classic Burger","category":"sandwiches","qty":1,"price":14.5},{"name":"Harvest Salad","category":"salads","qty":1,"price":12.5},{"name":"Riverside Mule","category":"cocktails","qty":2,"price":12}],"subtotal":51,"tax":4.7175,"tip":11.33379365382716,"total":67.05129365382716,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":4,"settled":true,"batchId":101},{"id":9024,"ts":1782579360000,"items":[{"name":"Molten Chocolate Cake","category":"desserts","qty":1,"price":9.5},{"name":"Veggie Melt","category":"sandwiches","qty":1,"price":12},{"name":"Caesar Salad","category":"salads","qty":2,"price":11}],"subtotal":43.5,"tax":4.02375,"tip":8.328800336583516,"total":55.85255033658352,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":101},{"id":9006,"ts":1782581160000,"items":[{"name":"House Red / White","category":"cocktails","qty":2,"price":10},{"name":"Espresso / Latte","category":"beverages","qty":1,"price":4.5}],"subtotal":24.5,"tax":2.26625,"tip":5.584221604485065,"total":32.350471604485065,"paymentMethod":"cash","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9009,"ts":1782582180000,"items":[{"name":"8oz Sirloin Steak","category":"entrees","qty":1,"price":27.5}],"subtotal":27.5,"tax":2.54375,"tip":4.25829513282515,"total":34.30204513282515,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":4,"settled":true,"batchId":101},{"id":9021,"ts":1782582420000,"items":[{"name":"Crème Brûlée","category":"desserts","qty":2,"price":8},{"name":"Margherita","category":"pizza","qty":2,"price":14},{"name":"Fresh Lemonade","category":"beverages","qty":1,"price":4.5}],"subtotal":48.5,"tax":4.48625,"tip":7.572550466246902,"total":60.5588004662469,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":101},{"id":9025,"ts":1782588420000,"items":[{"name":"House Red / White","category":"cocktails","qty":1,"price":10},{"name":"Wild Mushroom Risotto","category":"entrees","qty":1,"price":18},{"name":"New York Cheesecake","category":"desserts","qty":2,"price":8.5}],"subtotal":45,"tax":4.1625,"tip":8.421475809859112,"total":57.58397580985911,"paymentMethod":"cash","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9008,"ts":1782588840000,"items":[{"name":"Riverside Mule","category":"cocktails","qty":2,"price":12},{"name":"Grilled Chicken Cobb","category":"salads","qty":2,"price":14.5},{"name":"Reuben","category":"sandwiches","qty":2,"price":13},{"name":"Pepperoni","category":"pizza","qty":1,"price":16}],"subtotal":95,"tax":8.7875,"tip":14.362987693632022,"total":118.15048769363202,"paymentMethod":"cash","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9016,"ts":1782591840000,"items":[{"name":"Wild Mushroom Risotto","category":"entrees","qty":1,"price":18},{"name":"Pepperoni","category":"pizza","qty":2,"price":16}],"subtotal":50,"tax":4.625,"tip":7.979409927036612,"total":62.60440992703661,"paymentMethod":"cash","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9019,"ts":1782592080000,"items":[{"name":"Draft Beer","category":"cocktails","qty":1,"price":7.5},{"name":"Wild Mushroom Risotto","category":"entrees","qty":1,"price":18}],"subtotal":25.5,"tax":2.35875,"tip":5.027431931686587,"total":32.886181931686586,"paymentMethod":"cash","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9000,"ts":1782592560000,"items":[{"name":"Classic Margarita","category":"cocktails","qty":1,"price":12.5},{"name":"Roast Chicken","category":"entrees","qty":2,"price":19.5}],"subtotal":51.5,"tax":4.76375,"tip":11.059835872510448,"total":67.32358587251045,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":101},{"id":9001,"ts":1782592620000,"items":[{"name":"Pepperoni","category":"pizza","qty":1,"price":16}],"subtotal":16,"tax":1.48,"tip":3.7815557961165904,"total":21.26155579611659,"paymentMethod":"cash","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9023,"ts":1782595560000,"items":[{"name":"Classic Burger","category":"sandwiches","qty":1,"price":14.5},{"name":"Crème Brûlée","category":"desserts","qty":1,"price":8}],"subtotal":22.5,"tax":2.08125,"tip":4.622634635400027,"total":29.20388463540003,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":101},{"id":9005,"ts":1782595680000,"items":[{"name":"Wild Mushroom Risotto","category":"entrees","qty":1,"price":18},{"name":"8oz Sirloin Steak","category":"entrees","qty":1,"price":27.5},{"name":"Garlic Bread","category":"starters","qty":1,"price":6.5}],"subtotal":52,"tax":4.81,"tip":13.074849105030296,"total":69.8848491050303,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":101},{"id":9022,"ts":1782595980000,"items":[{"name":"Caesar Salad","category":"salads","qty":1,"price":11},{"name":"BBQ Chicken","category":"pizza","qty":1,"price":17},{"name":"Pepperoni","category":"pizza","qty":1,"price":16},{"name":"Fish & Chips","category":"entrees","qty":1,"price":17.5}],"subtotal":61.5,"tax":5.68875,"tip":9.557055844548158,"total":76.74580584454816,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":101},{"id":9003,"ts":1782596460000,"items":[{"name":"Molten Chocolate Cake","category":"desserts","qty":1,"price":9.5},{"name":"Grilled Salmon","category":"entrees","qty":2,"price":24}],"subtotal":57.5,"tax":5.31875,"tip":11.100512966606765,"total":73.91926296660677,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":101},{"id":9017,"ts":1782597480000,"items":[{"name":"Espresso / Latte","category":"beverages","qty":1,"price":4.5},{"name":"Crispy Calamari","category":"starters","qty":1,"price":13.5}],"subtotal":18,"tax":1.665,"tip":3.5353548478893932,"total":23.200354847889393,"paymentMethod":"cash","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9018,"ts":1782598800000,"items":[{"name":"Harvest Salad","category":"salads","qty":2,"price":12.5},{"name":"Classic Burger","category":"sandwiches","qty":2,"price":14.5},{"name":"Loaded Nachos","category":"starters","qty":1,"price":12},{"name":"Caesar Salad","category":"salads","qty":1,"price":11}],"subtotal":77,"tax":7.1225,"tip":16.033761758627367,"total":100.15626175862737,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":101},{"id":9011,"ts":1782599040000,"items":[{"name":"Loaded Nachos","category":"starters","qty":1,"price":12},{"name":"Roast Chicken","category":"entrees","qty":1,"price":19.5},{"name":"Roast Chicken","category":"entrees","qty":1,"price":19.5},{"name":"Fresh Lemonade","category":"beverages","qty":1,"price":4.5}],"subtotal":55.5,"tax":5.13375,"tip":9.819736543195322,"total":70.45348654319532,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":101},{"id":9007,"ts":1782600300000,"items":[{"name":"Grilled Chicken Cobb","category":"salads","qty":2,"price":14.5}],"subtotal":29,"tax":2.6825,"tip":4.501727820849046,"total":36.184227820849046,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":7,"settled":true,"batchId":101},{"id":9004,"ts":1782600420000,"items":[{"name":"Grilled Salmon","category":"entrees","qty":1,"price":24}],"subtotal":24,"tax":2.2199999999999998,"tip":3.623324149623513,"total":29.843324149623513,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":101},{"id":9031,"ts":1782645060000,"items":[{"name":"Margherita","category":"pizza","qty":2,"price":14},{"name":"Soup of the Day","category":"starters","qty":1,"price":7.5}],"subtotal":35.5,"tax":3.28375,"tip":5.868060978474095,"total":44.651810978474096,"paymentMethod":"cash","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9038,"ts":1782645060000,"items":[{"name":"Margherita","category":"pizza","qty":2,"price":14},{"name":"Margherita","category":"pizza","qty":1,"price":14},{"name":"Veggie Melt","category":"sandwiches","qty":2,"price":12},{"name":"8oz Sirloin Steak","category":"entrees","qty":1,"price":27.5}],"subtotal":93.5,"tax":8.64875,"tip":19.039376563495026,"total":121.18812656349503,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":102},{"id":9029,"ts":1782648480000,"items":[{"name":"New York Cheesecake","category":"desserts","qty":2,"price":8.5}],"subtotal":17,"tax":1.5725,"tip":4.543898438941687,"total":23.116398438941687,"paymentMethod":"cash","server":"Aisha Patel","status":"completed","refunds":[],"customerId":2,"settled":null,"batchId":null},{"id":9036,"ts":1782650040000,"items":[{"name":"Iced Tea","category":"beverages","qty":1,"price":3.5},{"name":"Roast Chicken","category":"entrees","qty":1,"price":19.5},{"name":"8oz Sirloin Steak","category":"entrees","qty":2,"price":27.5},{"name":"Roast Chicken","category":"entrees","qty":2,"price":19.5}],"subtotal":117,"tax":10.8225,"tip":20.806624820055436,"total":148.62912482005544,"paymentMethod":"cash","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9049,"ts":1782651000000,"items":[{"name":"Loaded Nachos","category":"starters","qty":1,"price":12},{"name":"Riverside Mule","category":"cocktails","qty":1,"price":12},{"name":"Fountain Soda","category":"beverages","qty":1,"price":3.5},{"name":"House Red / White","category":"cocktails","qty":1,"price":10}],"subtotal":37.5,"tax":3.46875,"tip":8.323806078988127,"total":49.29255607898813,"paymentMethod":"cash","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9044,"ts":1782651180000,"items":[{"name":"BBQ Chicken","category":"pizza","qty":1,"price":17},{"name":"Riverside Mule","category":"cocktails","qty":1,"price":12},{"name":"Fountain Soda","category":"beverages","qty":1,"price":3.5},{"name":"Classic Burger","category":"sandwiches","qty":2,"price":14.5}],"subtotal":61.5,"tax":5.68875,"tip":11.744030635831878,"total":78.93278063583188,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":102},{"id":9039,"ts":1782651720000,"items":[{"name":"Iced Tea","category":"beverages","qty":1,"price":3.5},{"name":"Grilled Chicken Cobb","category":"salads","qty":1,"price":14.5}],"subtotal":18,"tax":1.665,"tip":2.74388320595026,"total":22.40888320595026,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":102},{"id":9034,"ts":1782655260000,"items":[{"name":"Espresso / Latte","category":"beverages","qty":1,"price":4.5},{"name":"Espresso / Latte","category":"beverages","qty":1,"price":4.5}],"subtotal":9,"tax":0.8325,"tip":1.6510752898547798,"total":11.48357528985478,"paymentMethod":"cash","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9053,"ts":1782657240000,"items":[{"name":"New York Cheesecake","category":"desserts","qty":1,"price":8.5},{"name":"Harvest Salad","category":"salads","qty":1,"price":12.5},{"name":"New York Cheesecake","category":"desserts","qty":1,"price":8.5}],"subtotal":29.5,"tax":2.72875,"tip":6.8284941264661025,"total":39.0572441264661,"paymentMethod":"cash","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9026,"ts":1782661080000,"items":[{"name":"Crème Brûlée","category":"desserts","qty":2,"price":8},{"name":"Wild Mushroom Risotto","category":"entrees","qty":1,"price":18},{"name":"Wild Mushroom Risotto","category":"entrees","qty":1,"price":18},{"name":"Fresh Lemonade","category":"beverages","qty":1,"price":4.5}],"subtotal":56.5,"tax":5.22625,"tip":14.848901797318831,"total":76.57515179731882,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":102},{"id":9035,"ts":1782661560000,"items":[{"name":"House Red / White","category":"cocktails","qty":1,"price":10},{"name":"Margherita","category":"pizza","qty":1,"price":14},{"name":"Roast Chicken","category":"entrees","qty":1,"price":19.5}],"subtotal":43.5,"tax":4.02375,"tip":8.329118057736196,"total":55.852868057736195,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":102},{"id":9033,"ts":1782662220000,"items":[{"name":"Garlic Bread","category":"starters","qty":1,"price":6.5},{"name":"Garlic Bread","category":"starters","qty":1,"price":6.5}],"subtotal":13,"tax":1.2025,"tip":3.1370150128751995,"total":17.3395150128752,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":102},{"id":9032,"ts":1782662400000,"items":[{"name":"Grilled Chicken Cobb","category":"salads","qty":1,"price":14.5},{"name":"Loaded Nachos","category":"starters","qty":1,"price":12},{"name":"Garlic Bread","category":"starters","qty":1,"price":6.5},{"name":"Fish & Chips","category":"entrees","qty":1,"price":17.5}],"subtotal":50.5,"tax":4.67125,"tip":7.7945941305113955,"total":62.9658441305114,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":102},{"id":9042,"ts":1782664020000,"items":[{"name":"Reuben","category":"sandwiches","qty":1,"price":13},{"name":"Grilled Chicken Cobb","category":"salads","qty":2,"price":14.5},{"name":"Veggie Melt","category":"sandwiches","qty":1,"price":12},{"name":"Pepperoni","category":"pizza","qty":1,"price":16}],"subtotal":70,"tax":6.475,"tip":17.752089912537485,"total":94.22708991253748,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":6,"settled":true,"batchId":102},{"id":9050,"ts":1782666060000,"items":[{"name":"Garlic Bread","category":"starters","qty":1,"price":6.5},{"name":"Pepperoni","category":"pizza","qty":1,"price":16},{"name":"Veggie Melt","category":"sandwiches","qty":1,"price":12}],"subtotal":34.5,"tax":3.19125,"tip":8.914330169507302,"total":46.6055801695073,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":102},{"id":9028,"ts":1782667320000,"items":[{"name":"Caesar Salad","category":"salads","qty":1,"price":11},{"name":"Garlic Bread","category":"starters","qty":1,"price":6.5},{"name":"Wild Mushroom Risotto","category":"entrees","qty":2,"price":18}],"subtotal":53.5,"tax":4.9487499999999995,"tip":8.714471001997591,"total":67.16322100199758,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":102},{"id":9037,"ts":1782668640000,"items":[{"name":"Fish & Chips","category":"entrees","qty":1,"price":17.5},{"name":"Crispy Calamari","category":"starters","qty":1,"price":13.5},{"name":"Fountain Soda","category":"beverages","qty":1,"price":3.5}],"subtotal":34.5,"tax":3.19125,"tip":5.436134276445955,"total":43.12738427644595,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":102},{"id":9030,"ts":1782670380000,"items":[{"name":"Harvest Salad","category":"salads","qty":1,"price":12.5}],"subtotal":12.5,"tax":1.15625,"tip":2.349292446160689,"total":16.00554244616069,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":102},{"id":9047,"ts":1782671820000,"items":[{"name":"House Red / White","category":"cocktails","qty":1,"price":10},{"name":"House Red / White","category":"cocktails","qty":1,"price":10},{"name":"Wild Mushroom Risotto","category":"entrees","qty":1,"price":18},{"name":"Crispy Calamari","category":"starters","qty":2,"price":13.5}],"subtotal":65,"tax":6.0125,"tip":12.024480022676288,"total":83.03698002267629,"paymentMethod":"cash","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9045,"ts":1782674040000,"items":[{"name":"Roast Chicken","category":"entrees","qty":2,"price":19.5},{"name":"Pepperoni","category":"pizza","qty":2,"price":16}],"subtotal":71,"tax":6.5675,"tip":16.52753688354045,"total":94.09503688354044,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":1,"settled":true,"batchId":102},{"id":9046,"ts":1782678780000,"items":[{"name":"8oz Sirloin Steak","category":"entrees","qty":1,"price":27.5},{"name":"8oz Sirloin Steak","category":"entrees","qty":1,"price":27.5}],"subtotal":55,"tax":5.0875,"tip":11.573487647250294,"total":71.6609876472503,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":102},{"id":9052,"ts":1782680160000,"items":[{"name":"Loaded Nachos","category":"starters","qty":2,"price":12},{"name":"Caesar Salad","category":"salads","qty":1,"price":11}],"subtotal":35,"tax":3.2375,"tip":7.451608825335279,"total":45.689108825335275,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":3,"settled":true,"batchId":102},{"id":9041,"ts":1782682260000,"items":[{"name":"Loaded Nachos","category":"starters","qty":1,"price":12},{"name":"Harvest Salad","category":"salads","qty":1,"price":12.5},{"name":"Espresso / Latte","category":"beverages","qty":1,"price":4.5}],"subtotal":29,"tax":2.6825,"tip":7.309130473360419,"total":38.991630473360416,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":5,"settled":true,"batchId":102},{"id":9051,"ts":1782683160000,"items":[{"name":"8oz Sirloin Steak","category":"entrees","qty":1,"price":27.5},{"name":"Riverside Mule","category":"cocktails","qty":1,"price":12},{"name":"New York Cheesecake","category":"desserts","qty":1,"price":8.5}],"subtotal":48,"tax":4.4399999999999995,"tip":12.878445881903172,"total":65.31844588190317,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":102},{"id":9043,"ts":1782684360000,"items":[{"name":"8oz Sirloin Steak","category":"entrees","qty":1,"price":27.5},{"name":"Espresso / Latte","category":"beverages","qty":1,"price":4.5},{"name":"Loaded Nachos","category":"starters","qty":1,"price":12},{"name":"Soup of the Day","category":"starters","qty":1,"price":7.5}],"subtotal":51.5,"tax":4.76375,"tip":9.093484461377374,"total":65.35723446137737,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":102},{"id":9048,"ts":1782684900000,"items":[{"name":"Riverside Mule","category":"cocktails","qty":1,"price":12},{"name":"Fountain Soda","category":"beverages","qty":1,"price":3.5},{"name":"Margherita","category":"pizza","qty":1,"price":14},{"name":"Fountain Soda","category":"beverages","qty":2,"price":3.5}],"subtotal":36.5,"tax":3.3762499999999998,"tip":7.318020199961029,"total":47.194270199961025,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":6,"settled":true,"batchId":102},{"id":9027,"ts":1782685440000,"items":[{"name":"Margherita","category":"pizza","qty":2,"price":14},{"name":"Fish & Chips","category":"entrees","qty":2,"price":17.5},{"name":"Molten Chocolate Cake","category":"desserts","qty":2,"price":9.5}],"subtotal":82,"tax":7.585,"tip":15.12126882014796,"total":104.70626882014795,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":102},{"id":9040,"ts":1782687120000,"items":[{"name":"Soup of the Day","category":"starters","qty":1,"price":7.5},{"name":"House Red / White","category":"cocktails","qty":1,"price":10}],"subtotal":17.5,"tax":1.61875,"tip":3.5082494433503597,"total":22.626999443350357,"paymentMethod":"cash","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9075,"ts":1782732840000,"items":[{"name":"Soup of the Day","category":"starters","qty":1,"price":7.5}],"subtotal":7.5,"tax":0.69375,"tip":1.2183641167357564,"total":9.412114116735756,"paymentMethod":"cash","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9073,"ts":1782733920000,"items":[{"name":"Roast Chicken","category":"entrees","qty":1,"price":19.5}],"subtotal":19.5,"tax":1.80375,"tip":4.994830505638383,"total":26.298580505638384,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":103},{"id":9063,"ts":1782734100000,"items":[{"name":"Grilled Salmon","category":"entrees","qty":1,"price":24},{"name":"Fish & Chips","category":"entrees","qty":1,"price":17.5},{"name":"Roast Chicken","category":"entrees","qty":2,"price":19.5}],"subtotal":80.5,"tax":7.44625,"tip":15.899688625526613,"total":103.84593862552661,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":103},{"id":9066,"ts":1782734100000,"items":[{"name":"Grilled Chicken Cobb","category":"salads","qty":1,"price":14.5},{"name":"Fresh Lemonade","category":"beverages","qty":1,"price":4.5}],"subtotal":19,"tax":1.7575,"tip":4.353015883835033,"total":25.110515883835035,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":103},{"id":9067,"ts":1782734280000,"items":[{"name":"Iced Tea","category":"beverages","qty":1,"price":3.5},{"name":"Wild Mushroom Risotto","category":"entrees","qty":1,"price":18},{"name":"Espresso / Latte","category":"beverages","qty":2,"price":4.5},{"name":"Veggie Melt","category":"sandwiches","qty":2,"price":12}],"subtotal":54.5,"tax":5.04125,"tip":12.48245282455813,"total":72.02370282455813,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":103},{"id":9056,"ts":1782736560000,"items":[{"name":"Draft Beer","category":"cocktails","qty":2,"price":7.5},{"name":"8oz Sirloin Steak","category":"entrees","qty":2,"price":27.5},{"name":"Iced Tea","category":"beverages","qty":2,"price":3.5},{"name":"Riverside Mule","category":"cocktails","qty":1,"price":12}],"subtotal":89,"tax":8.2325,"tip":21.859423728324472,"total":119.09192372832447,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":103},{"id":9060,"ts":1782741240000,"items":[{"name":"Reuben","category":"sandwiches","qty":2,"price":13},{"name":"Fish & Chips","category":"entrees","qty":2,"price":17.5},{"name":"Veggie Melt","category":"sandwiches","qty":2,"price":12}],"subtotal":85,"tax":7.8625,"tip":20.3530659112148,"total":113.2155659112148,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":103},{"id":9078,"ts":1782743340000,"items":[{"name":"Crème Brûlée","category":"desserts","qty":2,"price":8}],"subtotal":16,"tax":1.48,"tip":3.7484890794754024,"total":21.228489079475402,"paymentMethod":"cash","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9055,"ts":1782744360000,"items":[{"name":"Harvest Salad","category":"salads","qty":2,"price":12.5},{"name":"8oz Sirloin Steak","category":"entrees","qty":1,"price":27.5}],"subtotal":52.5,"tax":4.85625,"tip":12.869242285424844,"total":70.22549228542485,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":103},{"id":9057,"ts":1782744720000,"items":[{"name":"Harvest Salad","category":"salads","qty":2,"price":12.5},{"name":"Roast Chicken","category":"entrees","qty":1,"price":19.5}],"subtotal":44.5,"tax":4.11625,"tip":8.224527053637429,"total":56.84077705363743,"paymentMethod":"cash","server":"Priya Nair","status":"completed","refunds":[],"customerId":7,"settled":null,"batchId":null},{"id":9064,"ts":1782745740000,"items":[{"name":"8oz Sirloin Steak","category":"entrees","qty":2,"price":27.5},{"name":"Fountain Soda","category":"beverages","qty":2,"price":3.5}],"subtotal":62,"tax":5.735,"tip":14.413227264024316,"total":82.14822726402431,"paymentMethod":"cash","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9080,"ts":1782746160000,"items":[{"name":"Riverside Mule","category":"cocktails","qty":1,"price":12},{"name":"Fountain Soda","category":"beverages","qty":1,"price":3.5},{"name":"Draft Beer","category":"cocktails","qty":2,"price":7.5}],"subtotal":30.5,"tax":2.82125,"tip":5.719813222330995,"total":39.04106322233099,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":103},{"id":9058,"ts":1782747600000,"items":[{"name":"Fountain Soda","category":"beverages","qty":1,"price":3.5},{"name":"Pepperoni","category":"pizza","qty":1,"price":16},{"name":"Pepperoni","category":"pizza","qty":1,"price":16},{"name":"Garlic Bread","category":"starters","qty":1,"price":6.5}],"subtotal":42,"tax":3.885,"tip":9.016159605570136,"total":54.901159605570136,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":103},{"id":9068,"ts":1782750600000,"items":[{"name":"Roast Chicken","category":"entrees","qty":1,"price":19.5}],"subtotal":19.5,"tax":1.80375,"tip":3.2177174778236077,"total":24.52146747782361,"paymentMethod":"cash","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9070,"ts":1782750900000,"items":[{"name":"Crème Brûlée","category":"desserts","qty":2,"price":8}],"subtotal":16,"tax":1.48,"tip":3.02319484770298,"total":20.50319484770298,"paymentMethod":"cash","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9062,"ts":1782751140000,"items":[{"name":"Veggie Supreme","category":"pizza","qty":1,"price":15.5},{"name":"Fountain Soda","category":"beverages","qty":2,"price":3.5}],"subtotal":22.5,"tax":2.08125,"tip":4.255170064349659,"total":28.83642006434966,"paymentMethod":"cash","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9069,"ts":1782753300000,"items":[{"name":"Grilled Chicken Cobb","category":"salads","qty":1,"price":14.5}],"subtotal":14.5,"tax":1.34125,"tip":2.4989366590697317,"total":18.340186659069733,"paymentMethod":"cash","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9054,"ts":1782753360000,"items":[{"name":"Riverside Mule","category":"cocktails","qty":1,"price":12}],"subtotal":12,"tax":1.1099999999999999,"tip":2.7183167896047236,"total":15.828316789604724,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":103},{"id":9077,"ts":1782753780000,"items":[{"name":"House Red / White","category":"cocktails","qty":2,"price":10},{"name":"Grilled Chicken Cobb","category":"salads","qty":1,"price":14.5},{"name":"New York Cheesecake","category":"desserts","qty":2,"price":8.5},{"name":"Veggie Supreme","category":"pizza","qty":1,"price":15.5}],"subtotal":67,"tax":6.1975,"tip":12.72443597562611,"total":85.92193597562611,"paymentMethod":"cash","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9059,"ts":1782753960000,"items":[{"name":"Crème Brûlée","category":"desserts","qty":2,"price":8}],"subtotal":16,"tax":1.48,"tip":4.308439852595329,"total":21.78843985259533,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":103},{"id":9071,"ts":1782755880000,"items":[{"name":"Caesar Salad","category":"salads","qty":2,"price":11},{"name":"Grilled Salmon","category":"entrees","qty":2,"price":24},{"name":"Roast Chicken","category":"entrees","qty":1,"price":19.5}],"subtotal":89.5,"tax":8.27875,"tip":18.24962429358624,"total":116.02837429358624,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":103},{"id":9074,"ts":1782756420000,"items":[{"name":"Roast Chicken","category":"entrees","qty":2,"price":19.5},{"name":"Riverside Mule","category":"cocktails","qty":1,"price":12},{"name":"Margherita","category":"pizza","qty":1,"price":14},{"name":"Grilled Salmon","category":"entrees","qty":1,"price":24}],"subtotal":89,"tax":8.2325,"tip":17.372549357945097,"total":114.60504935794509,"paymentMethod":"cash","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":5,"settled":null,"batchId":null},{"id":9065,"ts":1782760860000,"items":[{"name":"Veggie Supreme","category":"pizza","qty":1,"price":15.5},{"name":"Loaded Nachos","category":"starters","qty":1,"price":12}],"subtotal":27.5,"tax":2.54375,"tip":5.6890724920202045,"total":35.732822492020205,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":7,"settled":true,"batchId":103},{"id":9072,"ts":1782765120000,"items":[{"name":"Caesar Salad","category":"salads","qty":2,"price":11},{"name":"Caesar Salad","category":"salads","qty":1,"price":11}],"subtotal":33,"tax":3.0524999999999998,"tip":5.6244583497662095,"total":41.67695834976621,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":103},{"id":9061,"ts":1782767700000,"items":[{"name":"New York Cheesecake","category":"desserts","qty":2,"price":8.5},{"name":"Veggie Supreme","category":"pizza","qty":2,"price":15.5},{"name":"Fish & Chips","category":"entrees","qty":1,"price":17.5},{"name":"Molten Chocolate Cake","category":"desserts","qty":1,"price":9.5}],"subtotal":75,"tax":6.9375,"tip":19.785497618140653,"total":101.72299761814065,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":103},{"id":9079,"ts":1782768000000,"items":[{"name":"Crispy Calamari","category":"starters","qty":1,"price":13.5},{"name":"Riverside Mule","category":"cocktails","qty":1,"price":12},{"name":"Fresh Lemonade","category":"beverages","qty":1,"price":4.5}],"subtotal":30,"tax":2.775,"tip":6.796002081502229,"total":39.57100208150223,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":103},{"id":9076,"ts":1782771120000,"items":[{"name":"Garlic Bread","category":"starters","qty":1,"price":6.5},{"name":"Veggie Supreme","category":"pizza","qty":1,"price":15.5},{"name":"Iced Tea","category":"beverages","qty":2,"price":3.5},{"name":"Pepperoni","category":"pizza","qty":1,"price":16}],"subtotal":45,"tax":4.1625,"tip":8.681569271860644,"total":57.84406927186065,"paymentMethod":"cash","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9087,"ts":1782817620000,"items":[{"name":"Harvest Salad","category":"salads","qty":1,"price":12.5},{"name":"Margherita","category":"pizza","qty":1,"price":14},{"name":"Espresso / Latte","category":"beverages","qty":1,"price":4.5}],"subtotal":31,"tax":2.8675,"tip":5.021681441199035,"total":38.889181441199035,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":5,"settled":true,"batchId":104},{"id":9093,"ts":1782818220000,"items":[{"name":"Classic Burger","category":"sandwiches","qty":2,"price":14.5},{"name":"Crispy Calamari","category":"starters","qty":1,"price":13.5},{"name":"Classic Burger","category":"sandwiches","qty":1,"price":14.5},{"name":"Pepperoni","category":"pizza","qty":1,"price":16}],"subtotal":73,"tax":6.7524999999999995,"tip":15.606370703978463,"total":95.35887070397845,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":104},{"id":9098,"ts":1782818880000,"items":[{"name":"Classic Burger","category":"sandwiches","qty":1,"price":14.5},{"name":"Fresh Lemonade","category":"beverages","qty":1,"price":4.5}],"subtotal":19,"tax":1.7575,"tip":4.8118368300329895,"total":25.569336830032988,"paymentMethod":"cash","server":"James Chen","status":"completed","refunds":[],"customerId":1,"settled":null,"batchId":null},{"id":9085,"ts":1782819180000,"items":[{"name":"Loaded Nachos","category":"starters","qty":2,"price":12}],"subtotal":24,"tax":2.2199999999999998,"tip":5.2153268978744745,"total":31.435326897874475,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":104},{"id":9083,"ts":1782823380000,"items":[{"name":"House Red / White","category":"cocktails","qty":1,"price":10},{"name":"Loaded Nachos","category":"starters","qty":1,"price":12},{"name":"BBQ Chicken","category":"pizza","qty":1,"price":17},{"name":"Reuben","category":"sandwiches","qty":1,"price":13}],"subtotal":52,"tax":4.81,"tip":13.762447122149169,"total":70.57244712214917,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":104},{"id":9101,"ts":1782823560000,"items":[{"name":"BBQ Chicken","category":"pizza","qty":1,"price":17},{"name":"Grilled Chicken Cobb","category":"salads","qty":1,"price":14.5},{"name":"Loaded Nachos","category":"starters","qty":2,"price":12}],"subtotal":55.5,"tax":5.13375,"tip":11.913619730556384,"total":72.54736973055638,"paymentMethod":"cash","server":"Priya Nair","status":"completed","refunds":[],"customerId":3,"settled":null,"batchId":null},{"id":9089,"ts":1782824100000,"items":[{"name":"8oz Sirloin Steak","category":"entrees","qty":2,"price":27.5},{"name":"Garlic Bread","category":"starters","qty":1,"price":6.5},{"name":"Veggie Supreme","category":"pizza","qty":1,"price":15.5}],"subtotal":77,"tax":7.1225,"tip":16.838673424310983,"total":100.96117342431099,"paymentMethod":"cash","server":"Aisha Patel","status":"completed","refunds":[],"customerId":5,"settled":null,"batchId":null},{"id":9084,"ts":1782825840000,"items":[{"name":"BBQ Chicken","category":"pizza","qty":1,"price":17},{"name":"BBQ Chicken","category":"pizza","qty":1,"price":17},{"name":"Classic Margarita","category":"cocktails","qty":1,"price":12.5},{"name":"Harvest Salad","category":"salads","qty":1,"price":12.5}],"subtotal":59,"tax":5.4575,"tip":13.79086788863875,"total":78.24836788863874,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":104},{"id":9110,"ts":1782828120000,"items":[{"name":"Crispy Calamari","category":"starters","qty":1,"price":13.5},{"name":"Fountain Soda","category":"beverages","qty":1,"price":3.5},{"name":"Loaded Nachos","category":"starters","qty":1,"price":12},{"name":"New York Cheesecake","category":"desserts","qty":1,"price":8.5}],"subtotal":37.5,"tax":3.46875,"tip":7.4901778200874105,"total":48.45892782008741,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":104},{"id":9102,"ts":1782830520000,"items":[{"name":"Wild Mushroom Risotto","category":"entrees","qty":2,"price":18},{"name":"Classic Margarita","category":"cocktails","qty":1,"price":12.5}],"subtotal":48.5,"tax":4.48625,"tip":12.88223290805239,"total":65.86848290805239,"paymentMethod":"cash","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9081,"ts":1782832140000,"items":[{"name":"BBQ Chicken","category":"pizza","qty":2,"price":17}],"subtotal":34,"tax":3.145,"tip":8.361856648251413,"total":45.506856648251414,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":104},{"id":9094,"ts":1782837300000,"items":[{"name":"Riverside Mule","category":"cocktails","qty":2,"price":12},{"name":"Draft Beer","category":"cocktails","qty":1,"price":7.5}],"subtotal":31.5,"tax":2.91375,"tip":7.0638674052665005,"total":41.4776174052665,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":104},{"id":9082,"ts":1782838140000,"items":[{"name":"Molten Chocolate Cake","category":"desserts","qty":1,"price":9.5},{"name":"Crispy Chicken Sandwich","category":"sandwiches","qty":1,"price":13.5},{"name":"Caesar Salad","category":"salads","qty":2,"price":11}],"subtotal":45,"tax":4.1625,"tip":8.748703925823794,"total":57.9112039258238,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":104},{"id":9088,"ts":1782839040000,"items":[{"name":"Pepperoni","category":"pizza","qty":2,"price":16},{"name":"Molten Chocolate Cake","category":"desserts","qty":1,"price":9.5},{"name":"Margherita","category":"pizza","qty":1,"price":14}],"subtotal":55.5,"tax":5.13375,"tip":11.24015372314956,"total":71.87390372314955,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":104},{"id":9099,"ts":1782839280000,"items":[{"name":"Classic Burger","category":"sandwiches","qty":2,"price":14.5},{"name":"Fountain Soda","category":"beverages","qty":1,"price":3.5},{"name":"Fresh Lemonade","category":"beverages","qty":2,"price":4.5}],"subtotal":41.5,"tax":3.83875,"tip":10.025125664980152,"total":55.36387566498015,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":104},{"id":9112,"ts":1782839640000,"items":[{"name":"House Red / White","category":"cocktails","qty":1,"price":10},{"name":"Molten Chocolate Cake","category":"desserts","qty":1,"price":9.5},{"name":"Fish & Chips","category":"entrees","qty":2,"price":17.5},{"name":"8oz Sirloin Steak","category":"entrees","qty":1,"price":27.5}],"subtotal":82,"tax":7.585,"tip":16.58418272925541,"total":106.1691827292554,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":2,"settled":true,"batchId":104},{"id":9095,"ts":1782843420000,"items":[{"name":"Grilled Chicken Cobb","category":"salads","qty":1,"price":14.5},{"name":"Veggie Melt","category":"sandwiches","qty":1,"price":12},{"name":"Draft Beer","category":"cocktails","qty":1,"price":7.5}],"subtotal":34,"tax":3.145,"tip":5.322088595163076,"total":42.46708859516308,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":104},{"id":9092,"ts":1782844680000,"items":[{"name":"New York Cheesecake","category":"desserts","qty":1,"price":8.5},{"name":"Grilled Salmon","category":"entrees","qty":1,"price":24},{"name":"Grilled Chicken Cobb","category":"salads","qty":1,"price":14.5},{"name":"Garlic Bread","category":"starters","qty":1,"price":6.5}],"subtotal":53.5,"tax":4.9487499999999995,"tip":11.479903618264943,"total":69.92865361826495,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":1,"settled":true,"batchId":104},{"id":9103,"ts":1782844680000,"items":[{"name":"Caesar Salad","category":"salads","qty":1,"price":11},{"name":"Margherita","category":"pizza","qty":1,"price":14},{"name":"Wild Mushroom Risotto","category":"entrees","qty":1,"price":18},{"name":"Loaded Nachos","category":"starters","qty":1,"price":12}],"subtotal":55,"tax":5.0875,"tip":11.116314059961587,"total":71.20381405996159,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":104},{"id":9100,"ts":1782844920000,"items":[{"name":"Grilled Chicken Cobb","category":"salads","qty":1,"price":14.5},{"name":"Garlic Bread","category":"starters","qty":1,"price":6.5},{"name":"New York Cheesecake","category":"desserts","qty":1,"price":8.5},{"name":"House Red / White","category":"cocktails","qty":2,"price":10}],"subtotal":49.5,"tax":4.57875,"tip":13.012017661049029,"total":67.09076766104903,"paymentMethod":"cash","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9106,"ts":1782845220000,"items":[{"name":"Garlic Bread","category":"starters","qty":1,"price":6.5},{"name":"BBQ Chicken","category":"pizza","qty":2,"price":17},{"name":"BBQ Chicken","category":"pizza","qty":1,"price":17},{"name":"New York Cheesecake","category":"desserts","qty":1,"price":8.5}],"subtotal":66,"tax":6.1049999999999995,"tip":15.488810465354472,"total":87.59381046535448,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":104},{"id":9105,"ts":1782848880000,"items":[{"name":"Fresh Lemonade","category":"beverages","qty":2,"price":4.5},{"name":"Garlic Bread","category":"starters","qty":2,"price":6.5},{"name":"Fish & Chips","category":"entrees","qty":2,"price":17.5}],"subtotal":57,"tax":5.2725,"tip":13.388134331032633,"total":75.66063433103264,"paymentMethod":"cash","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9109,"ts":1782851160000,"items":[{"name":"BBQ Chicken","category":"pizza","qty":1,"price":17},{"name":"Soup of the Day","category":"starters","qty":1,"price":7.5},{"name":"Crispy Calamari","category":"starters","qty":1,"price":13.5}],"subtotal":38,"tax":3.515,"tip":10.092263233680278,"total":51.60726323368028,"paymentMethod":"cash","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9111,"ts":1782853080000,"items":[{"name":"Wild Mushroom Risotto","category":"entrees","qty":1,"price":18},{"name":"Espresso / Latte","category":"beverages","qty":1,"price":4.5}],"subtotal":22.5,"tax":2.08125,"tip":4.064781801612116,"total":28.646031801612118,"paymentMethod":"cash","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9096,"ts":1782853200000,"items":[{"name":"Crispy Chicken Sandwich","category":"sandwiches","qty":1,"price":13.5}],"subtotal":13.5,"tax":1.24875,"tip":3.054294085507281,"total":17.80304408550728,"paymentMethod":"cash","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9108,"ts":1782855360000,"items":[{"name":"Veggie Melt","category":"sandwiches","qty":2,"price":12}],"subtotal":24,"tax":2.2199999999999998,"tip":4.407380484938622,"total":30.62738048493862,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":1,"settled":true,"batchId":104},{"id":9097,"ts":1782855540000,"items":[{"name":"Classic Margarita","category":"cocktails","qty":1,"price":12.5},{"name":"Molten Chocolate Cake","category":"desserts","qty":1,"price":9.5},{"name":"Wild Mushroom Risotto","category":"entrees","qty":1,"price":18}],"subtotal":40,"tax":3.7,"tip":8.935686490684747,"total":52.63568649068475,"paymentMethod":"cash","server":"Priya Nair","status":"completed","refunds":[],"customerId":4,"settled":null,"batchId":null},{"id":9104,"ts":1782855660000,"items":[{"name":"Fresh Lemonade","category":"beverages","qty":1,"price":4.5},{"name":"Veggie Melt","category":"sandwiches","qty":1,"price":12},{"name":"8oz Sirloin Steak","category":"entrees","qty":1,"price":27.5}],"subtotal":44,"tax":4.07,"tip":11.419921638853847,"total":59.48992163885384,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":104},{"id":9091,"ts":1782857220000,"items":[{"name":"Roast Chicken","category":"entrees","qty":2,"price":19.5}],"subtotal":39,"tax":3.6075,"tip":7.116634063376113,"total":49.72413406337611,"paymentMethod":"cash","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9090,"ts":1782857700000,"items":[{"name":"Draft Beer","category":"cocktails","qty":1,"price":7.5},{"name":"Margherita","category":"pizza","qty":1,"price":14}],"subtotal":21.5,"tax":1.98875,"tip":3.227311293329112,"total":26.716061293329112,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":104},{"id":9086,"ts":1782858720000,"items":[{"name":"Margherita","category":"pizza","qty":2,"price":14}],"subtotal":28,"tax":2.59,"tip":6.71249095223844,"total":37.30249095223844,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":104},{"id":9107,"ts":1782858960000,"items":[{"name":"Wild Mushroom Risotto","category":"entrees","qty":1,"price":18},{"name":"Classic Burger","category":"sandwiches","qty":1,"price":14.5},{"name":"Espresso / Latte","category":"beverages","qty":1,"price":4.5},{"name":"House Red / White","category":"cocktails","qty":1,"price":10}],"subtotal":47,"tax":4.3475,"tip":7.847274669148028,"total":59.194774669148025,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":104},{"id":9133,"ts":1782903660000,"items":[{"name":"Fish & Chips","category":"entrees","qty":1,"price":17.5},{"name":"Molten Chocolate Cake","category":"desserts","qty":1,"price":9.5}],"subtotal":27,"tax":2.4975,"tip":4.993387422244996,"total":34.490887422244995,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":105},{"id":9135,"ts":1782904920000,"items":[{"name":"Classic Burger","category":"sandwiches","qty":1,"price":14.5},{"name":"Caesar Salad","category":"salads","qty":1,"price":11},{"name":"Draft Beer","category":"cocktails","qty":1,"price":7.5},{"name":"Draft Beer","category":"cocktails","qty":1,"price":7.5}],"subtotal":40.5,"tax":3.74625,"tip":10.569603466540574,"total":54.815853466540574,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":105},{"id":9127,"ts":1782905700000,"items":[{"name":"Soup of the Day","category":"starters","qty":2,"price":7.5}],"subtotal":15,"tax":1.3875,"tip":2.6311461435165255,"total":19.018646143516523,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":105},{"id":9132,"ts":1782906060000,"items":[{"name":"Garlic Bread","category":"starters","qty":1,"price":6.5},{"name":"Crispy Calamari","category":"starters","qty":1,"price":13.5},{"name":"Iced Tea","category":"beverages","qty":1,"price":3.5}],"subtotal":23.5,"tax":2.17375,"tip":5.052364713381976,"total":30.726114713381975,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":105},{"id":9138,"ts":1782906300000,"items":[{"name":"Fountain Soda","category":"beverages","qty":1,"price":3.5}],"subtotal":3.5,"tax":0.32375,"tip":0.9272387374425308,"total":4.750988737442531,"paymentMethod":"cash","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9141,"ts":1782906840000,"items":[{"name":"BBQ Chicken","category":"pizza","qty":2,"price":17},{"name":"Molten Chocolate Cake","category":"desserts","qty":1,"price":9.5}],"subtotal":43.5,"tax":4.02375,"tip":11.142282304912806,"total":58.666032304912804,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":1,"settled":true,"batchId":105},{"id":9115,"ts":1782907560000,"items":[{"name":"New York Cheesecake","category":"desserts","qty":1,"price":8.5}],"subtotal":8.5,"tax":0.78625,"tip":1.2943653544876725,"total":10.580615354487673,"paymentMethod":"cash","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9130,"ts":1782912840000,"items":[{"name":"Fish & Chips","category":"entrees","qty":1,"price":17.5},{"name":"House Red / White","category":"cocktails","qty":1,"price":10},{"name":"Crème Brûlée","category":"desserts","qty":1,"price":8}],"subtotal":35.5,"tax":3.28375,"tip":6.027642285553738,"total":44.81139228555374,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":105},{"id":9137,"ts":1782913500000,"items":[{"name":"Crispy Chicken Sandwich","category":"sandwiches","qty":2,"price":13.5},{"name":"Caesar Salad","category":"salads","qty":1,"price":11},{"name":"Loaded Nachos","category":"starters","qty":1,"price":12}],"subtotal":50,"tax":4.625,"tip":12.188958874437958,"total":66.81395887443796,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":105},{"id":9124,"ts":1782916500000,"items":[{"name":"House Red / White","category":"cocktails","qty":1,"price":10},{"name":"Grilled Salmon","category":"entrees","qty":1,"price":24},{"name":"New York Cheesecake","category":"desserts","qty":1,"price":8.5}],"subtotal":42.5,"tax":3.93125,"tip":9.994795783865266,"total":56.42604578386526,"paymentMethod":"cash","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9120,"ts":1782916860000,"items":[{"name":"Draft Beer","category":"cocktails","qty":1,"price":7.5},{"name":"Fresh Lemonade","category":"beverages","qty":1,"price":4.5}],"subtotal":12,"tax":1.1099999999999999,"tip":1.9101647830009458,"total":15.020164783000945,"paymentMethod":"cash","server":"Priya Nair","status":"completed","refunds":[],"customerId":2,"settled":null,"batchId":null},{"id":9129,"ts":1782919080000,"items":[{"name":"Veggie Melt","category":"sandwiches","qty":2,"price":12},{"name":"Roast Chicken","category":"entrees","qty":1,"price":19.5},{"name":"Draft Beer","category":"cocktails","qty":1,"price":7.5},{"name":"Classic Burger","category":"sandwiches","qty":1,"price":14.5}],"subtotal":65.5,"tax":6.05875,"tip":16.92298198983539,"total":88.4817319898354,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":105},{"id":9119,"ts":1782919680000,"items":[{"name":"New York Cheesecake","category":"desserts","qty":1,"price":8.5},{"name":"Classic Margarita","category":"cocktails","qty":1,"price":12.5},{"name":"Crispy Chicken Sandwich","category":"sandwiches","qty":1,"price":13.5}],"subtotal":34.5,"tax":3.19125,"tip":6.527603382999077,"total":44.21885338299907,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":1,"settled":true,"batchId":105},{"id":9134,"ts":1782920640000,"items":[{"name":"Reuben","category":"sandwiches","qty":1,"price":13},{"name":"Molten Chocolate Cake","category":"desserts","qty":2,"price":9.5},{"name":"Veggie Supreme","category":"pizza","qty":1,"price":15.5},{"name":"Reuben","category":"sandwiches","qty":1,"price":13}],"subtotal":60.5,"tax":5.5962499999999995,"tip":15.725683134505525,"total":81.82193313450553,"paymentMethod":"cash","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9142,"ts":1782921060000,"items":[{"name":"Wild Mushroom Risotto","category":"entrees","qty":1,"price":18}],"subtotal":18,"tax":1.665,"tip":3.7998790266551077,"total":23.464879026655108,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":105},{"id":9140,"ts":1782922560000,"items":[{"name":"Garlic Bread","category":"starters","qty":1,"price":6.5},{"name":"Classic Burger","category":"sandwiches","qty":1,"price":14.5}],"subtotal":21,"tax":1.9425,"tip":4.283533434318378,"total":27.226033434318378,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":2,"settled":true,"batchId":105},{"id":9143,"ts":1782925620000,"items":[{"name":"New York Cheesecake","category":"desserts","qty":1,"price":8.5}],"subtotal":8.5,"tax":0.78625,"tip":1.743971060346812,"total":11.030221060346813,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":5,"settled":true,"batchId":105},{"id":9136,"ts":1782926220000,"items":[{"name":"Riverside Mule","category":"cocktails","qty":2,"price":12},{"name":"Fresh Lemonade","category":"beverages","qty":2,"price":4.5},{"name":"8oz Sirloin Steak","category":"entrees","qty":1,"price":27.5},{"name":"Grilled Salmon","category":"entrees","qty":2,"price":24}],"subtotal":108.5,"tax":10.036249999999999,"tip":27.563413810981434,"total":146.09966381098144,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":105},{"id":9114,"ts":1782927060000,"items":[{"name":"Crispy Chicken Sandwich","category":"sandwiches","qty":1,"price":13.5},{"name":"Wild Mushroom Risotto","category":"entrees","qty":1,"price":18},{"name":"Garlic Bread","category":"starters","qty":1,"price":6.5}],"subtotal":38,"tax":3.515,"tip":7.844758113306015,"total":49.359758113306015,"paymentMethod":"cash","server":"James Chen","status":"completed","refunds":[],"customerId":1,"settled":null,"batchId":null},{"id":9139,"ts":1782930660000,"items":[{"name":"Fountain Soda","category":"beverages","qty":1,"price":3.5},{"name":"Caesar Salad","category":"salads","qty":1,"price":11}],"subtotal":14.5,"tax":1.34125,"tip":3.130214009969495,"total":18.971464009969495,"paymentMethod":"cash","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9122,"ts":1782933660000,"items":[{"name":"Espresso / Latte","category":"beverages","qty":2,"price":4.5}],"subtotal":9,"tax":0.8325,"tip":2.2299220100976527,"total":12.062422010097652,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":1,"settled":true,"batchId":105},{"id":9118,"ts":1782935220000,"items":[{"name":"Veggie Supreme","category":"pizza","qty":1,"price":15.5},{"name":"BBQ Chicken","category":"pizza","qty":1,"price":17},{"name":"Iced Tea","category":"beverages","qty":1,"price":3.5},{"name":"Classic Margarita","category":"cocktails","qty":1,"price":12.5}],"subtotal":48.5,"tax":4.48625,"tip":8.711372393262572,"total":61.69762239326257,"paymentMethod":"cash","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9113,"ts":1782937440000,"items":[{"name":"BBQ Chicken","category":"pizza","qty":2,"price":17},{"name":"Classic Burger","category":"sandwiches","qty":1,"price":14.5}],"subtotal":48.5,"tax":4.48625,"tip":11.688586179837584,"total":64.67483617983758,"paymentMethod":"cash","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9123,"ts":1782938580000,"items":[{"name":"BBQ Chicken","category":"pizza","qty":1,"price":17},{"name":"Pepperoni","category":"pizza","qty":1,"price":16},{"name":"Classic Margarita","category":"cocktails","qty":1,"price":12.5}],"subtotal":45.5,"tax":4.20875,"tip":10.369206563523038,"total":60.07795656352304,"paymentMethod":"cash","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9126,"ts":1782938580000,"items":[{"name":"Iced Tea","category":"beverages","qty":1,"price":3.5},{"name":"Fountain Soda","category":"beverages","qty":1,"price":3.5},{"name":"Grilled Chicken Cobb","category":"salads","qty":2,"price":14.5}],"subtotal":36,"tax":3.33,"tip":9.151291781142353,"total":48.48129178114235,"paymentMethod":"cash","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9131,"ts":1782939480000,"items":[{"name":"Garlic Bread","category":"starters","qty":1,"price":6.5}],"subtotal":6.5,"tax":0.60125,"tip":1.503640757300891,"total":8.604890757300891,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":105},{"id":9117,"ts":1782939660000,"items":[{"name":"Classic Margarita","category":"cocktails","qty":1,"price":12.5},{"name":"Fresh Lemonade","category":"beverages","qty":1,"price":4.5},{"name":"8oz Sirloin Steak","category":"entrees","qty":1,"price":27.5}],"subtotal":44.5,"tax":4.11625,"tip":7.580418970584869,"total":56.19666897058487,"paymentMethod":"cash","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9125,"ts":1782939960000,"items":[{"name":"Margherita","category":"pizza","qty":1,"price":14},{"name":"Fresh Lemonade","category":"beverages","qty":1,"price":4.5}],"subtotal":18.5,"tax":1.71125,"tip":3.2229881664505227,"total":23.434238166450523,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":105},{"id":9116,"ts":1782940560000,"items":[{"name":"Veggie Supreme","category":"pizza","qty":1,"price":15.5},{"name":"Grilled Chicken Cobb","category":"salads","qty":2,"price":14.5},{"name":"8oz Sirloin Steak","category":"entrees","qty":1,"price":27.5}],"subtotal":72,"tax":6.66,"tip":12.936692693307995,"total":91.59669269330799,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":1,"settled":true,"batchId":105},{"id":9128,"ts":1782941220000,"items":[{"name":"New York Cheesecake","category":"desserts","qty":1,"price":8.5},{"name":"Harvest Salad","category":"salads","qty":1,"price":12.5},{"name":"Crème Brûlée","category":"desserts","qty":1,"price":8},{"name":"Fish & Chips","category":"entrees","qty":1,"price":17.5}],"subtotal":46.5,"tax":4.30125,"tip":11.92609940667171,"total":62.727349406671706,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":105},{"id":9121,"ts":1782944520000,"items":[{"name":"Espresso / Latte","category":"beverages","qty":2,"price":4.5},{"name":"Soup of the Day","category":"starters","qty":2,"price":7.5},{"name":"BBQ Chicken","category":"pizza","qty":1,"price":17}],"subtotal":41,"tax":3.7925,"tip":10.31423282302916,"total":55.106732823029155,"paymentMethod":"cash","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9146,"ts":1782990300000,"items":[{"name":"Grilled Chicken Cobb","category":"salads","qty":2,"price":14.5},{"name":"Crème Brûlée","category":"desserts","qty":1,"price":8},{"name":"New York Cheesecake","category":"desserts","qty":1,"price":8.5},{"name":"Crispy Calamari","category":"starters","qty":1,"price":13.5}],"subtotal":59,"tax":5.4575,"tip":11.365560116898267,"total":75.82306011689826,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":106},{"id":9148,"ts":1782991560000,"items":[{"name":"Crispy Calamari","category":"starters","qty":2,"price":13.5},{"name":"Fish & Chips","category":"entrees","qty":2,"price":17.5},{"name":"Grilled Chicken Cobb","category":"salads","qty":1,"price":14.5},{"name":"Veggie Melt","category":"sandwiches","qty":1,"price":12}],"subtotal":88.5,"tax":8.18625,"tip":17.71786367165856,"total":114.40411367165856,"paymentMethod":"cash","server":"Priya Nair","status":"completed","refunds":[],"customerId":1,"settled":null,"batchId":null},{"id":9166,"ts":1782992400000,"items":[{"name":"Classic Burger","category":"sandwiches","qty":1,"price":14.5}],"subtotal":14.5,"tax":1.34125,"tip":2.35245242790319,"total":18.19370242790319,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":106},{"id":9171,"ts":1782992400000,"items":[{"name":"Reuben","category":"sandwiches","qty":1,"price":13},{"name":"Crème Brûlée","category":"desserts","qty":1,"price":8}],"subtotal":21,"tax":1.9425,"tip":3.2769545769318937,"total":26.21945457693189,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":106},{"id":9167,"ts":1782994200000,"items":[{"name":"Veggie Supreme","category":"pizza","qty":1,"price":15.5},{"name":"Espresso / Latte","category":"beverages","qty":1,"price":4.5},{"name":"House Red / White","category":"cocktails","qty":1,"price":10}],"subtotal":30,"tax":2.775,"tip":4.8602259295061225,"total":37.63522592950612,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":5,"settled":true,"batchId":106},{"id":9151,"ts":1782994920000,"items":[{"name":"Crispy Calamari","category":"starters","qty":2,"price":13.5},{"name":"Draft Beer","category":"cocktails","qty":1,"price":7.5},{"name":"Harvest Salad","category":"salads","qty":1,"price":12.5},{"name":"Crispy Chicken Sandwich","category":"sandwiches","qty":1,"price":13.5}],"subtotal":60.5,"tax":5.5962499999999995,"tip":15.753532248479315,"total":81.84978224847931,"paymentMethod":"cash","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9158,"ts":1782995700000,"items":[{"name":"Caesar Salad","category":"salads","qty":1,"price":11},{"name":"Veggie Supreme","category":"pizza","qty":2,"price":15.5}],"subtotal":42,"tax":3.885,"tip":6.402526241987943,"total":52.28752624198794,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":106},{"id":9170,"ts":1782996300000,"items":[{"name":"Fish & Chips","category":"entrees","qty":1,"price":17.5},{"name":"Draft Beer","category":"cocktails","qty":1,"price":7.5},{"name":"Harvest Salad","category":"salads","qty":1,"price":12.5}],"subtotal":37.5,"tax":3.46875,"tip":8.510440329322591,"total":49.47919032932259,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":106},{"id":9161,"ts":1782996960000,"items":[{"name":"Crispy Chicken Sandwich","category":"sandwiches","qty":1,"price":13.5},{"name":"Fresh Lemonade","category":"beverages","qty":1,"price":4.5},{"name":"Riverside Mule","category":"cocktails","qty":1,"price":12}],"subtotal":30,"tax":2.775,"tip":5.7313111128285525,"total":38.50631111282855,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":106},{"id":9154,"ts":1782997560000,"items":[{"name":"BBQ Chicken","category":"pizza","qty":1,"price":17},{"name":"Draft Beer","category":"cocktails","qty":1,"price":7.5}],"subtotal":24.5,"tax":2.26625,"tip":4.671696915356442,"total":31.43794691535644,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":106},{"id":9172,"ts":1782998820000,"items":[{"name":"Riverside Mule","category":"cocktails","qty":1,"price":12},{"name":"Molten Chocolate Cake","category":"desserts","qty":1,"price":9.5},{"name":"Soup of the Day","category":"starters","qty":1,"price":7.5},{"name":"Reuben","category":"sandwiches","qty":1,"price":13}],"subtotal":42,"tax":3.885,"tip":10.611964242104442,"total":56.49696424210444,"paymentMethod":"cash","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9149,"ts":1782999300000,"items":[{"name":"New York Cheesecake","category":"desserts","qty":1,"price":8.5},{"name":"Veggie Melt","category":"sandwiches","qty":2,"price":12}],"subtotal":32.5,"tax":3.00625,"tip":8.282257161475718,"total":43.78850716147572,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":106},{"id":9153,"ts":1783002300000,"items":[{"name":"BBQ Chicken","category":"pizza","qty":1,"price":17},{"name":"Soup of the Day","category":"starters","qty":1,"price":7.5},{"name":"Veggie Supreme","category":"pizza","qty":1,"price":15.5},{"name":"Reuben","category":"sandwiches","qty":1,"price":13}],"subtotal":53,"tax":4.9025,"tip":9.544850889639928,"total":67.44735088963994,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":106},{"id":9159,"ts":1783003560000,"items":[{"name":"Classic Burger","category":"sandwiches","qty":1,"price":14.5},{"name":"Classic Margarita","category":"cocktails","qty":1,"price":12.5}],"subtotal":27,"tax":2.4975,"tip":4.409460752438754,"total":33.90696075243875,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":106},{"id":9162,"ts":1783005300000,"items":[{"name":"Wild Mushroom Risotto","category":"entrees","qty":1,"price":18},{"name":"Fresh Lemonade","category":"beverages","qty":2,"price":4.5}],"subtotal":27,"tax":2.4975,"tip":6.049011555416509,"total":35.54651155541651,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":106},{"id":9163,"ts":1783008180000,"items":[{"name":"Soup of the Day","category":"starters","qty":1,"price":7.5},{"name":"Caesar Salad","category":"salads","qty":1,"price":11}],"subtotal":18.5,"tax":1.71125,"tip":3.3845713488897307,"total":23.59582134888973,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":106},{"id":9164,"ts":1783009140000,"items":[{"name":"Pepperoni","category":"pizza","qty":1,"price":16}],"subtotal":16,"tax":1.48,"tip":3.5293975138664244,"total":21.009397513866425,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":106},{"id":9150,"ts":1783009200000,"items":[{"name":"Wild Mushroom Risotto","category":"entrees","qty":1,"price":18},{"name":"Harvest Salad","category":"salads","qty":1,"price":12.5},{"name":"Wild Mushroom Risotto","category":"entrees","qty":1,"price":18}],"subtotal":48.5,"tax":4.48625,"tip":12.031374223111198,"total":65.0176242231112,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":2,"settled":true,"batchId":106},{"id":9160,"ts":1783009320000,"items":[{"name":"Iced Tea","category":"beverages","qty":1,"price":3.5}],"subtotal":3.5,"tax":0.32375,"tip":0.7619151924597098,"total":4.58566519245971,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":106},{"id":9155,"ts":1783013100000,"items":[{"name":"House Red / White","category":"cocktails","qty":1,"price":10},{"name":"House Red / White","category":"cocktails","qty":1,"price":10},{"name":"Classic Burger","category":"sandwiches","qty":1,"price":14.5}],"subtotal":34.5,"tax":3.19125,"tip":8.850968280611559,"total":46.54221828061156,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":106},{"id":9169,"ts":1783014240000,"items":[{"name":"Fish & Chips","category":"entrees","qty":1,"price":17.5},{"name":"Veggie Supreme","category":"pizza","qty":2,"price":15.5},{"name":"Fish & Chips","category":"entrees","qty":1,"price":17.5},{"name":"Caesar Salad","category":"salads","qty":1,"price":11}],"subtotal":77,"tax":7.1225,"tip":20.192573393499476,"total":104.31507339349947,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":106},{"id":9156,"ts":1783017720000,"items":[{"name":"Reuben","category":"sandwiches","qty":1,"price":13}],"subtotal":13,"tax":1.2025,"tip":2.3146456703078004,"total":16.5171456703078,"paymentMethod":"cash","server":"James Chen","status":"completed","refunds":[],"customerId":5,"settled":null,"batchId":null},{"id":9168,"ts":1783023540000,"items":[{"name":"Classic Margarita","category":"cocktails","qty":1,"price":12.5},{"name":"Fresh Lemonade","category":"beverages","qty":1,"price":4.5},{"name":"Classic Margarita","category":"cocktails","qty":1,"price":12.5},{"name":"Molten Chocolate Cake","category":"desserts","qty":1,"price":9.5}],"subtotal":39,"tax":3.6075,"tip":7.950555564500391,"total":50.55805556450039,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":106},{"id":9152,"ts":1783025220000,"items":[{"name":"Crispy Chicken Sandwich","category":"sandwiches","qty":1,"price":13.5},{"name":"Crispy Chicken Sandwich","category":"sandwiches","qty":1,"price":13.5}],"subtotal":27,"tax":2.4975,"tip":4.213886618614197,"total":33.7113866186142,"paymentMethod":"cash","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9145,"ts":1783026300000,"items":[{"name":"Classic Margarita","category":"cocktails","qty":1,"price":12.5}],"subtotal":12.5,"tax":1.15625,"tip":3.0882578117307276,"total":16.744507811730728,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":106},{"id":9165,"ts":1783026540000,"items":[{"name":"Iced Tea","category":"beverages","qty":1,"price":3.5}],"subtotal":3.5,"tax":0.32375,"tip":0.7695160183031112,"total":4.593266018303111,"paymentMethod":"cash","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9144,"ts":1783029660000,"items":[{"name":"Pepperoni","category":"pizza","qty":2,"price":16}],"subtotal":32,"tax":2.96,"tip":8.250311391055584,"total":43.21031139105558,"paymentMethod":"cash","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9157,"ts":1783030440000,"items":[{"name":"Reuben","category":"sandwiches","qty":1,"price":13}],"subtotal":13,"tax":1.2025,"tip":3.4437976320739834,"total":17.646297632073985,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":106},{"id":9147,"ts":1783032660000,"items":[{"name":"Iced Tea","category":"beverages","qty":2,"price":3.5}],"subtotal":7,"tax":0.6475,"tip":1.887083315709606,"total":9.534583315709606,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":true,"batchId":106},{"id":9193,"ts":1783077480000,"items":[{"name":"Molten Chocolate Cake","category":"desserts","qty":2,"price":9.5},{"name":"Grilled Salmon","category":"entrees","qty":1,"price":24}],"subtotal":43,"tax":3.9775,"tip":9.30025228947401,"total":56.27775228947401,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":false,"batchId":null},{"id":9174,"ts":1783079040000,"items":[{"name":"Veggie Melt","category":"sandwiches","qty":1,"price":12},{"name":"Pepperoni","category":"pizza","qty":1,"price":16},{"name":"Veggie Melt","category":"sandwiches","qty":1,"price":12}],"subtotal":40,"tax":3.7,"tip":10.42609640546143,"total":54.12609640546143,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":false,"batchId":null},{"id":9177,"ts":1783079040000,"items":[{"name":"Grilled Salmon","category":"entrees","qty":1,"price":24}],"subtotal":24,"tax":2.2199999999999998,"tip":5.369587296321988,"total":31.589587296321987,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":false,"batchId":null},{"id":9179,"ts":1783079880000,"items":[{"name":"Iced Tea","category":"beverages","qty":2,"price":3.5},{"name":"Draft Beer","category":"cocktails","qty":2,"price":7.5}],"subtotal":22,"tax":2.035,"tip":4.813640296496451,"total":28.848640296496452,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":false,"batchId":null},{"id":9182,"ts":1783080900000,"items":[{"name":"Wild Mushroom Risotto","category":"entrees","qty":1,"price":18}],"subtotal":18,"tax":1.665,"tip":2.8149449433200058,"total":22.479944943320007,"paymentMethod":"cash","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9184,"ts":1783083120000,"items":[{"name":"Crispy Calamari","category":"starters","qty":1,"price":13.5},{"name":"Crispy Chicken Sandwich","category":"sandwiches","qty":1,"price":13.5},{"name":"Grilled Salmon","category":"entrees","qty":1,"price":24},{"name":"Classic Burger","category":"sandwiches","qty":1,"price":14.5}],"subtotal":65.5,"tax":6.05875,"tip":12.366587088871746,"total":83.92533708887174,"paymentMethod":"cash","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9192,"ts":1783083900000,"items":[{"name":"Classic Burger","category":"sandwiches","qty":1,"price":14.5},{"name":"Roast Chicken","category":"entrees","qty":1,"price":19.5},{"name":"Crispy Chicken Sandwich","category":"sandwiches","qty":1,"price":13.5},{"name":"8oz Sirloin Steak","category":"entrees","qty":1,"price":27.5}],"subtotal":75,"tax":6.9375,"tip":11.890407593920827,"total":93.82790759392083,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":null,"settled":false,"batchId":null},{"id":9191,"ts":1783084980000,"items":[{"name":"Fresh Lemonade","category":"beverages","qty":2,"price":4.5}],"subtotal":9,"tax":0.8325,"tip":1.5344736790470779,"total":11.366973679047078,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":false,"batchId":null},{"id":9185,"ts":1783086060000,"items":[{"name":"Soup of the Day","category":"starters","qty":1,"price":7.5},{"name":"Veggie Melt","category":"sandwiches","qty":1,"price":12},{"name":"Riverside Mule","category":"cocktails","qty":1,"price":12},{"name":"Caesar Salad","category":"salads","qty":1,"price":11}],"subtotal":42.5,"tax":3.93125,"tip":6.466107287281193,"total":52.89735728728119,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":false,"batchId":null},{"id":9178,"ts":1783086960000,"items":[{"name":"Loaded Nachos","category":"starters","qty":1,"price":12},{"name":"Loaded Nachos","category":"starters","qty":2,"price":12},{"name":"Veggie Supreme","category":"pizza","qty":1,"price":15.5}],"subtotal":51.5,"tax":4.76375,"tip":10.408340288833715,"total":66.67209028883372,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":false,"batchId":null},{"id":9189,"ts":1783086960000,"items":[{"name":"Pepperoni","category":"pizza","qty":1,"price":16}],"subtotal":16,"tax":1.48,"tip":3.3526600062847134,"total":20.832660006284712,"paymentMethod":"cash","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9181,"ts":1783090800000,"items":[{"name":"Draft Beer","category":"cocktails","qty":1,"price":7.5},{"name":"Margherita","category":"pizza","qty":1,"price":14},{"name":"Crispy Chicken Sandwich","category":"sandwiches","qty":1,"price":13.5}],"subtotal":35,"tax":3.2375,"tip":7.5400224312208595,"total":45.77752243122086,"paymentMethod":"cash","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":6,"settled":null,"batchId":null},{"id":9176,"ts":1783090860000,"items":[{"name":"Veggie Supreme","category":"pizza","qty":2,"price":15.5},{"name":"8oz Sirloin Steak","category":"entrees","qty":1,"price":27.5},{"name":"Margherita","category":"pizza","qty":1,"price":14}],"subtotal":72.5,"tax":6.70625,"tip":16.225564704509452,"total":95.43181470450945,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":5,"settled":false,"batchId":null},{"id":9187,"ts":1783091400000,"items":[{"name":"Espresso / Latte","category":"beverages","qty":1,"price":4.5},{"name":"New York Cheesecake","category":"desserts","qty":1,"price":8.5},{"name":"Fish & Chips","category":"entrees","qty":1,"price":17.5}],"subtotal":30.5,"tax":2.82125,"tip":7.089851155243815,"total":40.41110115524381,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":false,"batchId":null},{"id":9194,"ts":1783091520000,"items":[{"name":"Fountain Soda","category":"beverages","qty":1,"price":3.5}],"subtotal":3.5,"tax":0.32375,"tip":0.9221090680360793,"total":4.745859068036079,"paymentMethod":"cash","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9173,"ts":1783095540000,"items":[{"name":"8oz Sirloin Steak","category":"entrees","qty":1,"price":27.5}],"subtotal":27.5,"tax":2.54375,"tip":5.809529966977425,"total":35.853279966977425,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":7,"settled":false,"batchId":null},{"id":9180,"ts":1783095900000,"items":[{"name":"Grilled Salmon","category":"entrees","qty":1,"price":24},{"name":"Fountain Soda","category":"beverages","qty":1,"price":3.5},{"name":"Molten Chocolate Cake","category":"desserts","qty":1,"price":9.5},{"name":"Crème Brûlée","category":"desserts","qty":1,"price":8}],"subtotal":45,"tax":4.1625,"tip":9.402672729548067,"total":58.56517272954807,"paymentMethod":"card","server":"Diego Ruiz","status":"completed","refunds":[],"customerId":null,"settled":false,"batchId":null},{"id":9183,"ts":1783101180000,"items":[{"name":"Garlic Bread","category":"starters","qty":1,"price":6.5},{"name":"Fresh Lemonade","category":"beverages","qty":1,"price":4.5},{"name":"Reuben","category":"sandwiches","qty":1,"price":13}],"subtotal":24,"tax":2.2199999999999998,"tip":5.726702128574251,"total":31.946702128574252,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":4,"settled":false,"batchId":null},{"id":9195,"ts":1783101300000,"items":[{"name":"Crispy Chicken Sandwich","category":"sandwiches","qty":1,"price":13.5},{"name":"Molten Chocolate Cake","category":"desserts","qty":1,"price":9.5}],"subtotal":23,"tax":2.1275,"tip":3.6313283253181727,"total":28.758828325318174,"paymentMethod":"card","server":"Priya Nair","status":"completed","refunds":[],"customerId":5,"settled":false,"batchId":null},{"id":9175,"ts":1783102380000,"items":[{"name":"Harvest Salad","category":"salads","qty":1,"price":12.5},{"name":"Espresso / Latte","category":"beverages","qty":1,"price":4.5},{"name":"Margherita","category":"pizza","qty":1,"price":14}],"subtotal":31,"tax":2.8675,"tip":7.481447014762088,"total":41.34894701476209,"paymentMethod":"cash","server":"Priya Nair","status":"completed","refunds":[],"customerId":6,"settled":null,"batchId":null},{"id":9188,"ts":1783103700000,"items":[{"name":"Crispy Calamari","category":"starters","qty":1,"price":13.5},{"name":"8oz Sirloin Steak","category":"entrees","qty":1,"price":27.5}],"subtotal":41,"tax":3.7925,"tip":10.067903814911842,"total":54.86040381491184,"paymentMethod":"card","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":false,"batchId":null},{"id":9190,"ts":1783104060000,"items":[{"name":"Draft Beer","category":"cocktails","qty":1,"price":7.5}],"subtotal":7.5,"tax":0.69375,"tip":1.854946299106814,"total":10.048696299106814,"paymentMethod":"cash","server":"James Chen","status":"completed","refunds":[],"customerId":null,"settled":null,"batchId":null},{"id":9186,"ts":1783104660000,"items":[{"name":"Crème Brûlée","category":"desserts","qty":1,"price":8}],"subtotal":8,"tax":0.74,"tip":1.6066663782298565,"total":10.346666378229857,"paymentMethod":"card","server":"Aisha Patel","status":"completed","refunds":[],"customerId":null,"settled":false,"batchId":null}],"tipOuts":[],"inventory":[{"id":1,"name":"Salmon Fillet","unit":"lb","stock":6,"par":15,"cost":9.2,"category":"Protein"},{"id":2,"name":"Sirloin Steak","unit":"lb","stock":18,"par":20,"cost":10.5,"category":"Protein"},{"id":3,"name":"Chicken Breast","unit":"lb","stock":24,"par":25,"cost":3.6,"category":"Protein"},{"id":4,"name":"Burger Patty","unit":"unit","stock":42,"par":60,"cost":2.1,"category":"Protein"},{"id":5,"name":"Mozzarella","unit":"lb","stock":9,"par":18,"cost":4.4,"category":"Dairy"},{"id":6,"name":"Romaine Lettuce","unit":"head","stock":14,"par":20,"cost":1.6,"category":"Produce"},{"id":7,"name":"Tomatoes","unit":"lb","stock":11,"par":15,"cost":2.3,"category":"Produce"},{"id":8,"name":"Avocado","unit":"unit","stock":5,"par":24,"cost":0.9,"category":"Produce"},{"id":9,"name":"Pizza Dough","unit":"unit","stock":28,"par":30,"cost":1.1,"category":"Dry Goods"},{"id":10,"name":"Russet Potatoes","unit":"lb","stock":40,"par":40,"cost":0.7,"category":"Produce"},{"id":11,"name":"House Vodka","unit":"bottle","stock":7,"par":8,"cost":18,"category":"Bar"},{"id":12,"name":"Tequila","unit":"bottle","stock":2,"par":6,"cost":24,"category":"Bar"},{"id":13,"name":"Draft Beer Keg","unit":"keg","stock":1,"par":3,"cost":120,"category":"Bar"},{"id":14,"name":"Coffee Beans","unit":"lb","stock":6,"par":10,"cost":8.5,"category":"Dry Goods"},{"id":15,"name":"Heavy Cream","unit":"qt","stock":8,"par":10,"cost":3.2,"category":"Dairy"}],"customers":[{"id":1,"name":"Ethan Brooks","phone":"(206) 555-0110","email":"ethan.b@example.com","address":"412 Pine St, Seattle, WA 98101","visits":14,"points":340,"totalSpent":842.5,"since":"2024-02-12"},{"id":2,"name":"Sofia Martinez","phone":"(206) 555-0124","email":"sofia.m@example.com","address":"88 Riverside Dr, Apt 3B, Seattle, WA 98121","visits":22,"points":610,"totalSpent":1390.2,"since":"2023-11-03"},{"id":3,"name":"Liam Walker","phone":"(206) 555-0188","email":"liam.w@example.com","address":"1500 Alaskan Way, Seattle, WA 98104","visits":5,"points":90,"totalSpent":215,"since":"2025-04-21"},{"id":4,"name":"Grace Kim","phone":"(206) 555-0142","email":"grace.k@example.com","address":"2200 Westlake Ave, Unit 901, Seattle, WA 98121","visits":31,"points":980,"totalSpent":2110.75,"since":"2023-06-18"},{"id":5,"name":"Noah Davis","phone":"(206) 555-0177","email":"noah.d@example.com","address":"733 Broadway E, Seattle, WA 98102","visits":2,"points":25,"totalSpent":78.4,"since":"2026-05-02"},{"id":6,"name":"Olivia Bennett","phone":"(206) 555-0199","email":"olivia.b@example.com","address":"19 Harbor View Ln, Bainbridge Island, WA 98110","visits":9,"points":215,"totalSpent":498.1,"since":"2024-09-09"},{"id":7,"name":"Marcus Lee","phone":"(206) 555-0163","email":"marcus.l@example.com","address":"5012 University Way NE, Seattle, WA 98105","visits":17,"points":455,"totalSpent":990.6,"since":"2024-01-27"}],"giftCards":[{"id":1,"code":"GC-7H2K-9XQ4","initialAmount":100,"balance":62.5,"customerId":4,"issuedBy":"Maria Lopez","ts":1781295994899,"active":true,"history":[{"type":"issue","amount":100,"ts":1781295994899,"by":"Maria Lopez"},{"type":"redeem","amount":-37.5,"ts":1782332794899,"note":"Order #9188"}]},{"id":2,"code":"GC-3M8P-1RT6","initialAmount":50,"balance":50,"customerId":2,"issuedBy":"Maria Lopez","ts":1782764794899,"active":true,"history":[{"type":"issue","amount":50,"ts":1782764794899,"by":"Maria Lopez"}]}],"vouchers":[{"id":1,"code":"VCH-WELCOME25","amount":25,"customerId":5,"sentTo":"noah.d@example.com","sentBy":"Maria Lopez","ts":1782937594899,"redeemed":false,"note":"Service recovery — long wait on 6/19"}],"settlementBatches":[{"id":101,"closedAt":1782602100000,"closedBy":"Maria Lopez","transactionIds":[9012,9002,9013,9024,9009,9021,9000,9023,9005,9022,9003,9018,9011,9007,9004],"count":15,"gross":826.21518352767,"tips":122.09893352766984,"refunds":0,"net":826.21518352767},{"id":102,"closedAt":1782688500000,"closedBy":"Maria Lopez","transactionIds":[9038,9044,9039,9026,9035,9033,9032,9042,9050,9028,9037,9030,9045,9046,9052,9041,9051,9043,9048,9027],"count":20,"gross":1235.4049704032436,"tips":198.07622040324384,"refunds":0,"net":1235.4049704032436},{"id":103,"closedAt":1782774900000,"closedBy":"Maria Lopez","transactionIds":[9073,9063,9066,9067,9056,9060,9055,9080,9058,9054,9059,9071,9065,9072,9061,9079],"count":16,"gross":996.1028540696391,"tips":170.719104069639,"refunds":0,"net":996.1028540696391},{"id":104,"closedAt":1782861300000,"closedBy":"Maria Lopez","transactionIds":[9087,9093,9085,9083,9084,9110,9081,9094,9082,9088,9099,9112,9095,9092,9103,9106,9108,9104,9090,9086,9107],"count":21,"gross":1225.7897577479066,"tips":199.93225774790625,"refunds":0,"net":1225.7897577479066},{"id":105,"closedAt":1782947700000,"closedBy":"Maria Lopez","transactionIds":[9133,9135,9127,9132,9141,9130,9137,9129,9119,9142,9140,9143,9136,9122,9131,9125,9116,9128],"count":18,"gross":848.2898609495534,"tips":145.2661109495535,"refunds":0,"net":848.2898609495534},{"id":106,"closedAt":1783034100000,"closedBy":"Maria Lopez","transactionIds":[9146,9166,9171,9167,9158,9170,9161,9154,9149,9153,9159,9162,9163,9164,9150,9160,9155,9169,9168,9145,9157,9147],"count":22,"gross":869.8209922861587,"tips":140.57724228615874,"refunds":0,"net":869.8209922861587}]};
+window.PineSync = {
+  SHARED_KEYS: ['restaurant','staff','menu','modifierGroups','tables','orders','completedOrders','inventory','customers','tipOuts','notifications','giftCards','vouchers','settlementBatches','nextUid','nextOrderId'],
+  async loadState() { return window.__SEED_STATE__; },
+  connect(onUpdate, opts={}) { if(opts.onConnect) setTimeout(opts.onConnect, 50); return null; },
+  push(fullState) { /* no-op in standalone preview */ },
+  merge(localState, shared) { Object.assign(localState, shared); if(localState.currentStaff){ const fresh = localState.staff.find(s=>s.id===localState.currentStaff.id); if(fresh) localState.currentStaff = fresh; } },
+  connected: true,
+};
+</script>
+<script>
+window.ICONS = {
+  dashboard:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>',
+  tables:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><circle cx="4.5" cy="4.5" r="2"/><circle cx="19.5" cy="4.5" r="2"/><circle cx="4.5" cy="19.5" r="2"/><circle cx="19.5" cy="19.5" r="2"/></svg>',
+  order:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h2l1.2 11.2A1.5 1.5 0 0 0 8.7 16.5h9.6a1.5 1.5 0 0 0 1.5-1.3L21 8H6"/><circle cx="9" cy="20" r="1.2"/><circle cx="17" cy="20" r="1.2"/></svg>',
+  kitchen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 13.5C4 11 4.5 7 8 6c1-2 5-2 6 0 3.5 1 4 5 2 7.5"/><path d="M5 13.5h14L17.5 21h-11L5 13.5Z"/></svg>',
+  menu:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h13a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>',
+  inventory:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5"/><line x1="12" y1="13" x2="12" y2="21"/></svg>',
+  staff:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 5 18.5V20"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M16 8a3 3 0 1 0 0-6"/><path d="M19.5 20v-1.5a3 3 0 0 0-2-2.8"/></svg>',
+  reports:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="20" x2="5" y2="11"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="19" y1="20" x2="19" y2="14"/><line x1="2.5" y1="20" x2="21.5" y2="20"/></svg>',
+  customers:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-3.9 3.6-7 8-7s8 3.1 8 7"/></svg>',
+  settings:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a7.8 7.8 0 0 0 0-3l1.8-1.4-2-3.4-2.1.6a8 8 0 0 0-2.6-1.5L14 2.5h-4l-.5 2.3a8 8 0 0 0-2.6 1.5l-2.1-.6-2 3.4L4.6 10.5a7.8 7.8 0 0 0 0 3L2.8 14.9l2 3.4 2.1-.6a8 8 0 0 0 2.6 1.5L10 21.5h4l.5-2.3a8 8 0 0 0 2.6-1.5l2.1.6 2-3.4-1.8-1.4Z"/></svg>',
+  logout:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>',
+  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>',
+  bell:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a1.99 1.99 0 0 1-3.4 0"/></svg>',
+  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+  minus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+  trash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>',
+  edit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>',
+  close:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+  checkCircle:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+  chevDown:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>',
+  chevLeft:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>',
+  card:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2.5"/><line x1="2" y1="10" x2="22" y2="10"/></svg>',
+  cash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><line x1="6" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="18" y2="12"/></svg>',
+  split:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M3 16v5h5"/><path d="M16 21h5v-5"/><line x1="21" y1="3" x2="3" y2="21"/></svg>',
+  printer:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6"/><rect x="4" y="9" width="16" height="8" rx="1.5"/><path d="M6 17v4h12v-4"/></svg>',
+  alert:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.86 1.8 18a1 1 0 0 0 .9 1.5h18.6a1 1 0 0 0 .9-1.5L13.7 3.86a1 1 0 0 0-1.74 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12" y2="17"/></svg>',
+  star:'<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.3 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9Z"/></svg>',
+  gift:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="13" rx="1.5"/><path d="M12 8v13"/><path d="M3 12h18"/><path d="M12 8c-2.5 0-4-1.3-4-3a2.5 2.5 0 0 1 4-2c1 0 1.6.6 2 1.5"/><path d="M12 8c2.5 0 4-1.3 4-3a2.5 2.5 0 0 0-4-2c-1 0-1.6.6-2 1.5"/></svg>',
+  fire:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c1.5 3 .5 4.5 2 6 2 2 3 4 3 6.5A5 5 0 0 1 7 14.5C7 11 9.5 9.5 9.5 7c1.5 1.5 1.5 3 1 4 1-.5 1.5-2 1.5-4Z"/></svg>',
+  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 16 14"/></svg>',
+  receipt:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v19l-2.5-1.5L13 21l-2.5-1.5L8 21l-2-1.5Z"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="15" y2="11"/></svg>',
+  hold:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>',
+  send:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>',
+  tag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 12.4 12.4 4.2a2 2 0 0 0-1.4-.6H5a2 2 0 0 0-2 2v6a2 2 0 0 0 .6 1.4l8.2 8.2a2 2 0 0 0 2.8 0l6-6a2 2 0 0 0 0-2.8Z"/><circle cx="8.5" cy="8.5" r="1.5"/></svg>',
+  globe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3a14 14 0 0 1 0 18"/><path d="M12 3a14 14 0 0 0 0 18"/></svg>',
+  filter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.5 10 19 14 21 14 12.5 22 3"/></svg>',
+  user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-3.9 3.6-7 8-7s8 3.1 8 7"/></svg>',
+  box:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5"/><line x1="12" y1="13" x2="12" y2="21"/></svg>',
+};
+
+</script>
+<script>
+const $ = (sel,el=document)=>el.querySelector(sel);
+const $$ = (sel,el=document)=>[...el.querySelectorAll(sel)];
+const money = (n)=> (n<0?'-':'') + '$' + Math.abs(n).toFixed(2);
+function fmtTime(ts){ return new Date(ts).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}); }
+function fmtElapsed(ts){
+  const mins = Math.max(0, Math.floor((Date.now()-ts)/60000));
+  const h = Math.floor(mins/60), m = mins%60;
+  return h>0 ? `${h}h ${m}m` : `${m}m`;
+}
+
+/* ============================================================
+   ONLINE ORDERS — shown on the login screen so anyone walking by
+   can see what's come in from delivery apps or the website, even
+   before clocking in.
+   ============================================================ */
+const ONLINE_PLATFORMS = {
+  doordash: {label:'DoorDash', color:'#FF3008'},
+  grubhub:  {label:'Grubhub',  color:'#FF8000'},
+  ubereats: {label:'Uber Eats', color:'#06C167'},
+  website:  {label:'Website',  color:'#FF7A3D'},
+};
+function renderOnlineOrdersPanel(){
+  const el = $('#online-orders-panel');
+  if(!el) return;
+  const orders = Object.values(STATE.orders||{}).filter(o=>o.status==='open' && o.platform).sort((a,b)=>a.openedAt-b.openedAt);
+  if(!orders.length){
+    el.innerHTML = `
+      <div class="oop-head"><div class="h3">Online Orders</div></div>
+      <div class="oop-empty">${ICONS.checkCircle} No online orders waiting — all caught up.</div>
+    `;
+    return;
+  }
+  el.innerHTML = `
+    <div class="oop-head">
+      <div class="h3">Online Orders</div>
+      <span class="badge badge-blue">${orders.length} new</span>
+    </div>
+    <div class="online-orders-grid">
+      ${orders.map(o=>{
+        const p = ONLINE_PLATFORMS[o.platform] || {label:o.platform, color:'var(--ink-faint)'};
+        const totals = orderTotals(o);
+        const itemCount = o.items.reduce((s,it)=>s+it.qty,0);
+        return `<div class="online-order-card">
+          <div class="ooc-top">
+            <span class="platform-badge" style="background:${p.color}22; color:${p.color};">${p.label}</span>
+            <span class="ooc-time">${fmtElapsed(o.openedAt)} ago</span>
+          </div>
+          <div class="ooc-customer">${o.customerName||'Guest'}</div>
+          <div class="ooc-meta">${itemCount} item${itemCount===1?'':'s'} · ${money(totals.total)}</div>
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+}
+function initials(name){ return name.split(' ').map(p=>p[0]).slice(0,2).join('').toUpperCase(); }
+function dayStart(d=new Date()){ const x=new Date(d); x.setHours(0,0,0,0); return x.getTime(); }
+
+let STATE = {
+  restaurant:{name:'Pine', taxRate:0, tipPresets:[0.18,0.20,0.25], sections:[]},
+  currentStaff:null, staff:[], menu:{categories:[],items:[]}, modifierGroups:{},
+  tables:[], orders:{}, completedOrders:[], inventory:[], customers:[], tipOuts:[], notifications:[],
+  nextUid:1, nextOrderId:1,
+};
+let pinBuffer='';
+let view='tables';
+let currentOrderId=null;
+let activeMenuCat=null;
+let activeStation='All';
+let mySalesRange='today';
+
+/* ---------- ported data helpers ---------- */
+const uid = ()=> 'u'+(STATE.nextUid++);
+function findMenuItem(id){ return STATE.menu.items.find(i=>i.id===id); }
+function findCategory(id){ return STATE.menu.categories.find(c=>c.id===id); }
+function findModGroup(key){ return STATE.modifierGroups[key]; }
+function buildOrderItem(menuId, qty, modSelections, notes, status, firedAgoMs){
+  const mi = findMenuItem(menuId);
+  let modPrice = 0; const mods=[];
+  (modSelections||[]).forEach(sel=>{
+    const grp = findModGroup(sel.group);
+    (sel.choices||[sel.choice]).forEach(choiceName=>{
+      const opt = grp.options.find(o=>o.name===choiceName);
+      if(opt){ modPrice += opt.price; mods.push({group:grp.name, name:opt.name, price:opt.price}); }
+    });
+  });
+  return {uid:uid(), menuItemId:menuId, name:mi.name, icon:mi.icon, basePrice:mi.price, modPrice, qty:qty||1, mods, notes:notes||'', station:findCategory(mi.category).station, status:status||'new', firedAt: firedAgoMs!=null?Date.now()-firedAgoMs:null};
+}
+function lineTotal(it){ return (it.basePrice+it.modPrice)*it.qty; }
+function orderTotals(o){
+  const subtotal = o.items.reduce((s,it)=>s+lineTotal(it),0);
+  const discount = o.discount||0;
+  const taxable = Math.max(0, subtotal-discount);
+  const tax = taxable*STATE.restaurant.taxRate;
+  const tip = o.tip||0;
+  return {subtotal, discount, tax, tip, total: taxable+tax+tip};
+}
+function getTable(id){ return STATE.tables.find(t=>t.id===id); }
+function tableLabel(id){ const t=getTable(id); return t? t.number : ''; }
+function getOrder(id){ return STATE.orders[id]; }
+function countNew(o){ return o.items.filter(i=>i.status==='new').length; }
+
+const DEPARTMENTS = ['Food','Beer','Liquor','Beverage','Open Items'];
+const DEPT_COLORS = {Food:'#FF9F6B', Beer:'#F2C14E', Liquor:'#B79CFF', Beverage:'#34C9AC', 'Open Items':'#8C8276'};
+const FOOD_CATEGORIES = ['starters','salads','sandwiches','entrees','pizza','desserts'];
+function departmentForItem(it){
+  const cat = it.category;
+  if(cat==='cocktails') return /beer/i.test(it.name) ? 'Beer' : 'Liquor';
+  if(cat==='beverages') return 'Beverage';
+  if(FOOD_CATEGORIES.includes(cat)) return 'Food';
+  return 'Open Items';
+}
+function shiftSalesByDept(staffMember){
+  const since = staffMember.clockInTime || 0;
+  const orders = STATE.completedOrders.filter(o=>o.server===staffMember.name && o.ts>=since);
+  const byDept = {}; DEPARTMENTS.forEach(d=>byDept[d]=0);
+  let totalTips=0, totalSales=0;
+  orders.forEach(o=>{
+    totalTips += o.tip||0; totalSales += o.total||0;
+    o.items.forEach(it=>{ byDept[departmentForItem(it)] += it.price*it.qty; });
+  });
+  return {byDept, totalTips, totalSales, orderCount: orders.length};
+}
+
+/* ---------- toast ---------- */
+function toast(msg, icon=ICONS.checkCircle){
+  const root = $('#toast-root');
+  const el = document.createElement('div');
+  el.className='toast-msg';
+  el.innerHTML = icon + '<span>'+msg+'</span>';
+  root.appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateY(8px)'; el.style.transition='.25s'; setTimeout(()=>el.remove(),250); }, 2400);
+}
+
+/* ---------- sheets ---------- */
+function showSheet(html){
+  $('#sheet-root').innerHTML = `<div class="sheet-overlay" data-action="closeSheet"><div class="sheet" data-action="stop">${html}</div></div>`;
+}
+function closeSheet(){ $('#sheet-root').innerHTML=''; }
+
+/* ============================================================
+   LOGIN
+   ============================================================ */
+function renderLogin(){
+  $('#login-restaurant').textContent = STATE.restaurant.name||'';
+  renderOnlineOrdersPanel();
+  $('#numpad').innerHTML = ['1','2','3','4','5','6','7','8','9','clear','0','del'].map(k=>{
+    if(k==='clear') return `<button class="numkey action" data-action="pinKey" data-key="clear">Clear</button>`;
+    if(k==='del') return `<button class="numkey action" data-action="pinKey" data-key="del">${ICONS.close}</button>`;
+    return `<button class="numkey" data-action="pinKey" data-key="${k}">${k}</button>`;
+  }).join('');
+  renderPinDisplay();
+}
+function renderPinDisplay(){
+  $('#pin-display').innerHTML = [0,1,2,3].map(i=>`<div class="pin-dot ${i<pinBuffer.length?'filled':''}"></div>`).join('');
+}
+function pinKey(key){
+  if(key==='clear') pinBuffer='';
+  else if(key==='del') pinBuffer=pinBuffer.slice(0,-1);
+  else if(pinBuffer.length<4) pinBuffer+=key;
+  renderPinDisplay();
+  if(pinBuffer.length===4){
+    const staff = STATE.staff.find(s=>s.pin===pinBuffer);
+    if(staff){
+      const prevClockIn = staff.clockInTime || 0;
+      if(!staff.clockedIn){ staff.clockedIn=true; staff.clockInTime=Date.now(); }
+      STATE.currentStaff=staff; pinBuffer=''; $('#login-error').textContent='';
+      enterApp();
+      notifyIncomingTipOuts(staff, prevClockIn);
+      PineSync.push(STATE);
+    } else {
+      $('#login-error').textContent='Incorrect PIN. Try again.';
+      $$('.pin-dot').forEach(d=>d.classList.add('error'));
+      setTimeout(()=>{ pinBuffer=''; renderPinDisplay(); $('#login-error').textContent=''; }, 500);
+    }
+  }
+}
+function notifyIncomingTipOuts(staff, since){
+  if(!since) return;
+  const received = STATE.tipOuts.filter(t=>t.toId===staff.id && t.ts>=since);
+  if(!received.length) return;
+  const total = received.reduce((sum,t)=>sum+t.amount,0);
+  const fromNames = [...new Set(received.map(t=>t.from))];
+  const msg = received.length===1
+    ? `You were tipped out ${money(total)} by ${fromNames[0]}`
+    : `You were tipped out ${money(total)} from ${fromNames.length} teammate${fromNames.length===1?'':'s'}`;
+  setTimeout(()=>toast(msg, ICONS.checkCircle), 600);
+}
+function enterApp(){
+  localStorage.setItem('pine-hh-staff-id', STATE.currentStaff.id);
+  $('#login-screen').classList.add('hidden');
+  $('#app').classList.add('active');
+  const tabs = tabsForRole(STATE.currentStaff.role);
+  view = tabs[0].id;
+  renderApp();
+  setInterval(()=>{ if(view==='kitchen'||view==='tables') renderApp(); }, 15000);
+}
+function logout(){
+  localStorage.removeItem('pine-hh-staff-id');
+  STATE.currentStaff=null; pinBuffer='';
+  $('#app').classList.remove('active');
+  $('#login-screen').classList.remove('hidden');
+  renderLogin();
+}
+
+/* ============================================================
+   APP SHELL / NAV
+   ============================================================ */
+const TABS_FULL = [
+  {id:'tables', label:'Tables', icon:'tables'},
+  {id:'order', label:'Order', icon:'order'},
+  {id:'kitchen', label:'Kitchen', icon:'kitchen'},
+  {id:'mysales', label:'My Sales', icon:'cash'},
+];
+const TABS_KITCHEN = [
+  {id:'tables', label:'Tables', icon:'tables'},
+  {id:'kitchen', label:'Kitchen', icon:'kitchen'},
+  {id:'mysales', label:'My Sales', icon:'cash'},
+];
+function tabsForRole(role){ return (role==='Cook'||role==='Food Runner'||role==='Busser') ? TABS_KITCHEN : TABS_FULL; }
+
+const TITLES = {tables:'Tables', order:'Order', kitchen:'Kitchen', mysales:'My Sales'};
+
+function renderApp(){
+  if(!STATE.currentStaff) return;
+  const me = STATE.currentStaff;
+  $('#hh-title').textContent = view==='order' && currentOrderId ? '' : TITLES[view];
+  $('#hh-sub').textContent = STATE.restaurant.name;
+  $('#hh-avatar').style.background = me.color;
+  $('#hh-avatar').textContent = initials(me.name);
+  const cob = $('#clockout-btn');
+  cob.innerHTML = me.clockedIn ? ICONS.clock : ICONS.checkCircle;
+  cob.classList.toggle('off', !me.clockedIn);
+  cob.title = me.clockedIn ? 'Clock out' : 'Clock in';
+
+  const tabs = tabsForRole(me.role);
+  if(!tabs.find(t=>t.id===view)) view = tabs[0].id;
+  $('#bottom-nav').innerHTML = tabs.map(t=>{
+    let badge = '';
+    if(t.id==='kitchen'){
+      const n = Object.values(STATE.orders).filter(o=>o.status==='open' && o.items.some(it=>it.status==='fired'||it.status==='ready')).length;
+      if(n>0) badge = `<span class="nav-badge">${n}</span>`;
+    }
+    return `<button class="nav-item ${view===t.id?'active':''}" data-action="goTab" data-tab="${t.id}">${badge}${ICONS[t.icon]}<span>${t.label}</span></button>`;
+  }).join('');
+
+  const renderers = {tables:renderTables, order:renderOrderView, kitchen:renderKitchenView, mysales:renderMySales};
+  $('#hh-main').innerHTML = renderers[view] ? renderers[view]() : '';
+  $('#cart-bar-slot').innerHTML = renderCartBar();
+}
+
+/* ============================================================
+   VIEW: TABLES
+   ============================================================ */
+function renderTables(){
+  const sections = STATE.restaurant.sections;
+  return sections.map(sec=>{
+    const tables = STATE.tables.filter(t=>t.section===sec);
+    return `<div class="hh-section">
+      <div class="hh-section-title">${sec}</div>
+      ${tables.map(t=>tableRow(t)).join('')}
+    </div>`;
+  }).join('');
+}
+function tableRow(t){
+  const o = t.orderId? getOrder(t.orderId): null;
+  const meta = {available:{label:'Available',cls:'badge-green'}, occupied:{label:'Occupied',cls:'badge-blue'}, check:{label:'Check',cls:'badge-amber'}, dirty:{label:'Needs bussing',cls:'badge-gray'}}[t.status];
+  let amt='';
+  if(o){ amt = `<div class="hh-table-amt">${money(orderTotals(o).total)}</div>`; }
+  return `<button class="hh-table-row status-${t.status}" data-action="openTable" data-id="${t.id}">
+    <div class="hh-table-num">${t.number}</div>
+    <div class="hh-table-info">
+      <div class="hh-table-meta">${t.seats} seat${t.seats===1?'':'s'}</div>
+      ${o?`<div class="hh-table-sub muted">${(o.server||'').split(' ')[0]} · opened ${fmtElapsed(o.openedAt)} ago</div>`:''}
+    </div>
+    <span class="badge ${meta.cls}">${meta.label}</span>
+    ${amt}
+  </button>`;
+}
+function openTable(id){
+  const t = getTable(id);
+  if(t.status==='dirty'){
+    t.status='available';
+    toast('Table '+t.number+' marked clean');
+    renderApp(); PineSync.push(STATE);
+    return;
+  }
+  if(t.orderId){ currentOrderId=t.orderId; view='order'; renderApp(); return; }
+  // available -> ask guest count
+  showSheet(`
+    <div class="sheet-head"><div class="h3">Seat Table ${t.number}</div><button class="sheet-close" data-action="closeSheet">${ICONS.close}</button></div>
+    <div class="sheet-body">
+      <div class="field"><label>Number of Guests</label>
+        <div style="display:flex; align-items:center; gap:14px; justify-content:center; padding:10px 0;">
+          <button class="qty-btn" data-action="seatGuestsDelta" data-delta="-1" style="width:42px;height:42px;">${ICONS.minus}</button>
+          <span class="num" id="seat-guests" style="font-family:var(--font-display); font-size:28px; font-weight:800; min-width:40px; text-align:center;">${t.seats>=2?2:1}</span>
+          <button class="qty-btn" data-action="seatGuestsDelta" data-delta="1" style="width:42px;height:42px;">${ICONS.plus}</button>
+        </div>
+      </div>
+    </div>
+    <div class="sheet-foot">
+      <button class="btn btn-secondary btn-block" data-action="closeSheet">Cancel</button>
+      <button class="btn btn-primary btn-block" data-action="seatTable" data-id="${t.id}">${ICONS.check} Seat &amp; Start Order</button>
+    </div>
+  `);
+}
+function seatGuestsDelta(delta){
+  const span = $('#seat-guests');
+  let val = Number(span.textContent)+delta;
+  if(val<1) val=1; if(val>20) val=20;
+  span.textContent = val;
+}
+function seatTable(tableId){
+  const t = getTable(tableId);
+  const guests = Number($('#seat-guests').textContent);
+  const id = STATE.nextOrderId++;
+  STATE.orders[id] = {id, tableId, server:STATE.currentStaff.name, guests, type:'dine-in', status:'open', items:[], openedAt:Date.now(), discount:0, tip:0};
+  t.status='occupied'; t.orderId=id;
+  closeSheet();
+  currentOrderId=id; view='order';
+  renderApp(); PineSync.push(STATE);
+}
+
+/* ============================================================
+   VIEW: ORDER
+   ============================================================ */
+function renderOrderView(){
+  if(!currentOrderId){
+    const orders = Object.values(STATE.orders).filter(o=>o.status==='open');
+    return `
+      <button class="btn btn-primary btn-block" data-action="startTakeout" style="margin-bottom:14px;">${ICONS.plus} New Takeout Order</button>
+      <div class="hh-section-title">Open Tickets</div>
+      ${orders.length? orders.map(o=>ticketRow(o)).join('') : `<div class="empty-state"><div class="h3">No open tickets</div><div style="font-size:12.5px; margin-top:4px;">Tap a table or start a takeout order.</div></div>`}
+    `;
+  }
+  const o = getOrder(currentOrderId);
+  if(!o){ currentOrderId=null; return renderOrderView(); }
+  activeMenuCat = activeMenuCat || STATE.menu.categories[0].id;
+  if(!STATE.menu.categories.find(c=>c.id===activeMenuCat)) activeMenuCat = STATE.menu.categories[0].id;
+  const items = STATE.menu.items.filter(i=>i.category===activeMenuCat);
+  const label = o.tableId? 'Table '+tableLabel(o.tableId) : 'Takeout · '+(o.customerName||'Guest');
+  setTimeout(()=>{ $('#hh-title').textContent = label; }, 0);
+  return `
+    <div class="hh-order-head">
+      <button class="btn-back" data-action="backToTickets">${ICONS.chevLeft}</button>
+      <div>
+        <div class="h3" style="font-size:14px;">${label}</div>
+        <div class="muted" style="font-size:11px;">#${o.id} · ${o.server}</div>
+      </div>
+    </div>
+    <div class="cat-chips">${STATE.menu.categories.map(c=>`<button class="cat-chip ${c.id===activeMenuCat?'active':''}" data-action="setMenuCat" data-cat="${c.id}">${c.icon} ${c.name}</button>`).join('')}</div>
+    <div class="menu-grid-2col">${items.map(menuItemCard2).join('')}</div>
+  `;
+}
+function ticketRow(o){
+  const totals = orderTotals(o);
+  const tag = o.tableId ? tableLabel(o.tableId) : 'TO';
+  const label = o.tableId ? 'Table '+tableLabel(o.tableId) : 'Takeout · '+(o.customerName||'Guest');
+  return `<button class="ticket-row" data-action="openOrder" data-id="${o.id}">
+    <div class="tag">${tag}</div>
+    <div class="mid"><div class="name">${label}</div><div class="sub">${(o.server||'').split(' ')[0]} · ${fmtElapsed(o.openedAt)} open</div></div>
+    <div class="amt">${money(totals.total)}</div>
+  </button>`;
+}
+function menuItemCard2(mi){
+  const action = (mi.modGroups&&mi.modGroups.length) ? 'openModifierSheet' : 'quickAdd';
+  return `<button class="menu-item-2col ${!mi.available?'unavailable':''}" data-action="${mi.available?action:''}" data-item-id="${mi.id}">
+    <div class="icon">${mi.icon}</div>
+    <div class="name">${mi.name}</div>
+    <div class="price">${mi.available?money(mi.price):"86'd"}</div>
+  </button>`;
+}
+function addItemToOrder(o, menuId, qty, mods, notes){
+  const newItem = buildOrderItem(menuId, qty, mods, notes, 'new');
+  const existing = o.items.find(i=>i.status==='new' && i.menuItemId===menuId && JSON.stringify(i.mods)===JSON.stringify(newItem.mods) && i.notes===notes);
+  if(existing){ existing.qty += qty; } else { o.items.push(newItem); }
+  toast(findMenuItem(menuId).name+' added to ticket');
+}
+function renderCartBar(){
+  if(view!=='order' || !currentOrderId) return '';
+  const o = getOrder(currentOrderId); if(!o) return '';
+  if(o.items.length===0) return '';
+  const totals = orderTotals(o);
+  const qty = o.items.reduce((s,i)=>s+i.qty,0);
+  return `<button class="cart-bar" data-action="openCartSheet">
+    <span>${qty} item${qty===1?'':'s'} · ${money(totals.total)}</span>
+    <span>View Ticket →</span>
+  </button>`;
+}
+
+/* ---- Modifier sheet ---- */
+function openModifierSheet(itemId){
+  const mi = findMenuItem(itemId);
+  showSheet(`
+    <div class="sheet-head"><div class="h3">${mi.icon} ${mi.name}</div><button class="sheet-close" data-action="closeSheet">${ICONS.close}</button></div>
+    <div class="sheet-body">
+      <p class="muted" style="font-size:12.5px; margin-bottom:14px;">${mi.desc||''}</p>
+      ${mi.modGroups.map(gKey=>{
+        const grp = STATE.modifierGroups[gKey];
+        return `<div class="modgroup" data-group="${gKey}">
+          <div class="modgroup-title"><span>${grp.name}</span>${grp.required?'<span class="req">Required</span>':''}</div>
+          <div class="modopt-grid">
+            ${grp.options.map((opt,idx)=>`
+              <button class="modopt ${grp.type==='single'&&idx===0?'selected':''}" data-action="toggleModOpt" data-group="${gKey}" data-type="${grp.type}" data-name="${opt.name}">
+                <span>${opt.name}</span>${opt.price>0?`<span class="opt-price">+${money(opt.price)}</span>`:''}
+              </button>`).join('')}
+          </div>
+        </div>`;
+      }).join('')}
+      <div class="field"><label>Special instructions</label><textarea id="mod-notes" rows="2" placeholder="e.g. no onions, allergy notes…"></textarea></div>
+      <div class="field"><label>Quantity</label>
+        <div style="display:flex; align-items:center; gap:14px;">
+          <button class="qty-btn" data-action="modQtyDelta" data-delta="-1" style="width:38px;height:38px;">${ICONS.minus}</button>
+          <span class="num" id="mod-qty" style="font-size:17px; min-width:24px; text-align:center; font-family:var(--font-mono); font-weight:700;">1</span>
+          <button class="qty-btn" data-action="modQtyDelta" data-delta="1" style="width:38px;height:38px;">${ICONS.plus}</button>
+        </div>
+      </div>
+    </div>
+    <div class="sheet-foot">
+      <button class="btn btn-secondary btn-block" data-action="closeSheet">Cancel</button>
+      <button class="btn btn-primary btn-block" data-action="confirmAddModified" data-item-id="${itemId}">Add to Ticket</button>
+    </div>
+  `);
+}
+function toggleModOpt(el){
+  const type = el.dataset.type;
+  const groupEl = el.closest('.modgroup');
+  if(type==='single'){ $$('.modopt', groupEl).forEach(o=>o.classList.remove('selected')); el.classList.add('selected'); }
+  else { el.classList.toggle('selected'); }
+}
+function modQtyDelta(delta){
+  const span = $('#mod-qty');
+  let val = Number(span.textContent)+delta;
+  if(val<1) val=1;
+  span.textContent = val;
+}
+function confirmAddModified(itemId){
+  const o = getOrder(currentOrderId); if(!o) return;
+  const mi = findMenuItem(itemId);
+  const qty = Number($('#mod-qty').textContent);
+  const notes = $('#mod-notes').value.trim();
+  const modSelections=[];
+  mi.modGroups.forEach(gKey=>{
+    const grp = STATE.modifierGroups[gKey];
+    const groupEl = $(`.modgroup[data-group="${gKey}"]`);
+    const selected = $$('.modopt.selected', groupEl).map(o=>o.dataset.name);
+    if(selected.length){
+      if(grp.type==='single') modSelections.push({group:gKey, choice:selected[0]});
+      else modSelections.push({group:gKey, choices:selected});
+    }
+  });
+  addItemToOrder(o, itemId, qty, modSelections, notes);
+  closeSheet(); renderApp(); PineSync.push(STATE);
+}
+
+/* ---- Cart sheet ---- */
+function openCartSheet(){
+  const o = getOrder(currentOrderId); if(!o) return;
+  const totals = orderTotals(o);
+  const label = o.tableId? 'Table '+tableLabel(o.tableId) : 'Takeout #'+o.id;
+  showSheet(`
+    <div class="sheet-head"><div class="h3">${label}</div><button class="sheet-close" data-action="closeSheet">${ICONS.close}</button></div>
+    <div class="sheet-body">
+      ${o.items.length? o.items.map(it=>cartLine(o,it)).join('') : `<div class="empty-state">No items yet</div>`}
+      <div class="cart-totals">
+        <div class="row"><span class="muted">Subtotal</span><span>${money(totals.subtotal)}</span></div>
+        ${totals.discount>0?`<div class="row"><span class="muted">Discount</span><span style="color:var(--danger)">-${money(totals.discount)}</span></div>`:''}
+        <div class="row"><span class="muted">Tax</span><span>${money(totals.tax)}</span></div>
+        <div class="row total"><span>Total</span><span>${money(totals.total)}</span></div>
+      </div>
+    </div>
+    <div class="sheet-foot" style="flex-direction:column; gap:10px;">
+      <button class="btn btn-teal btn-block" data-action="sendToKitchen" ${countNew(o)===0?'disabled':''}>${ICONS.send} Send ${countNew(o)} Item${countNew(o)===1?'':'s'} to Kitchen</button>
+      <div style="display:flex; gap:10px; width:100%;">
+        <button class="btn btn-secondary" style="flex:1;" data-action="closeSheet">Keep Adding</button>
+        <button class="btn btn-primary" style="flex:1;" data-action="openPaymentSheet" ${o.items.length===0?'disabled':''}>${ICONS.card} Pay ${money(totals.total)}</button>
+      </div>
+    </div>
+  `);
+}
+function cartLine(o, it){
+  const price = lineTotal(it);
+  const modsText = it.mods.map(m=>m.name + (m.price>0?` (+${money(m.price)})`:'')).join(', ');
+  const canEdit = it.status==='new';
+  return `<div class="cart-line">
+    <div class="top"><div class="name">${it.qty}× ${it.name}</div><div class="price">${money(price)}</div></div>
+    ${modsText?`<div class="mods">${modsText}</div>`:''}
+    ${it.notes?`<div class="notes">Note: ${it.notes}</div>`:''}
+    <div class="ctrl">
+      <span class="status-pill status-${it.status}">${it.status}</span>
+      ${canEdit?`<div class="qty-ctrl">
+        <button class="qty-btn" data-action="adjustQty" data-uid="${it.uid}" data-delta="-1">${ICONS.minus}</button>
+        <span class="num">${it.qty}</span>
+        <button class="qty-btn" data-action="adjustQty" data-uid="${it.uid}" data-delta="1">${ICONS.plus}</button>
+        <button class="qty-btn" data-action="removeItem" data-uid="${it.uid}" style="color:var(--danger)">${ICONS.trash}</button>
+      </div>`:''}
+    </div>
+  </div>`;
+}
+function adjustQty(uidStr, delta){
+  const o = getOrder(currentOrderId);
+  const it = o.items.find(i=>i.uid===uidStr);
+  it.qty += delta;
+  if(it.qty<=0) o.items = o.items.filter(i=>i.uid!==it.uid);
+  openCartSheet(); renderApp(); PineSync.push(STATE);
+}
+function removeItem(uidStr){
+  const o = getOrder(currentOrderId);
+  o.items = o.items.filter(i=>i.uid!==uidStr);
+  openCartSheet(); renderApp(); PineSync.push(STATE);
+}
+function sendToKitchen(){
+  const o = getOrder(currentOrderId);
+  const now = Date.now(); let n=0;
+  o.items.forEach(i=>{ if(i.status==='new'){ i.status='fired'; i.firedAt=now; n++; } });
+  toast(n+' item'+(n===1?'':'s')+' sent to the kitchen');
+  closeSheet(); renderApp(); PineSync.push(STATE);
+}
+
+/* ---- Payment sheet ---- */
+let payState = null;
+function openPaymentSheet(){
+  const o = getOrder(currentOrderId); if(!o) return;
+  payState = {tipMode:'pct', tipPct:STATE.restaurant.tipPresets[1], tipAmt:0, splitMode:'none', splitCount:2, method:'card'};
+  showSheet(paymentSheetHtml(o));
+}
+function paymentSheetHtml(o){
+  const ps = payState;
+  const subtotal = o.items.reduce((s,it)=>s+lineTotal(it),0);
+  const taxable = Math.max(0, subtotal-(o.discount||0));
+  const tax = taxable*STATE.restaurant.taxRate;
+  const tip = ps.tipMode==='pct'? taxable*ps.tipPct : (ps.tipMode==='custom'? ps.tipAmt : 0);
+  const total = taxable+tax+tip;
+  const perGuest = ps.splitMode==='even'? total/ps.splitCount : total;
+  const label = o.tableId? 'Table '+tableLabel(o.tableId) : 'Takeout #'+o.id;
+  return `
+    <div class="sheet-head"><div class="h3">Payment — ${label}</div><button class="sheet-close" data-action="closeSheet">${ICONS.close}</button></div>
+    <div class="sheet-body">
+      <div class="h3" style="font-size:12.5px; margin-bottom:8px;">Split the Check</div>
+      <div class="tabbar" style="margin-bottom:14px;">
+        <button class="tab ${ps.splitMode==='none'?'active':''}" data-action="setSplitMode" data-mode="none">${ICONS.receipt} One Check</button>
+        <button class="tab ${ps.splitMode==='even'?'active':''}" data-action="setSplitMode" data-mode="even">${ICONS.split} Split Evenly</button>
+      </div>
+      ${ps.splitMode==='even'?`<div class="field"><label>Number of Guests</label>
+        <div style="display:flex; align-items:center; gap:14px;">
+          <button class="qty-btn" data-action="splitCountDelta" data-delta="-1">${ICONS.minus}</button>
+          <span class="num" style="font-family:var(--font-mono); font-weight:700;">${ps.splitCount}</span>
+          <button class="qty-btn" data-action="splitCountDelta" data-delta="1">${ICONS.plus}</button>
+        </div></div>
+        <div class="muted" style="font-size:12.5px; margin-bottom:14px;">${money(perGuest)} per guest × ${ps.splitCount}</div>`:''}
+      <div class="h3" style="font-size:12.5px; margin-bottom:8px;">Add a Tip</div>
+      <div class="tabbar" style="margin-bottom:10px;">
+        ${STATE.restaurant.tipPresets.map(p=>`<button class="tab ${ps.tipMode==='pct'&&ps.tipPct===p?'active':''}" data-action="setTip" data-mode="pct" data-val="${p}">${(p*100).toFixed(0)}%</button>`).join('')}
+        <button class="tab ${ps.tipMode==='custom'?'active':''}" data-action="setTip" data-mode="custom" data-val="0">Custom</button>
+        <button class="tab ${ps.tipMode==='none'?'active':''}" data-action="setTip" data-mode="none" data-val="0">No Tip</button>
+      </div>
+      ${ps.tipMode==='custom'?`<div class="field"><label>Custom Tip ($)</label><input type="number" id="custom-tip" min="0" step="0.01" value="${ps.tipAmt.toFixed(2)}" data-change="setCustomTip"></div>`:''}
+      <div class="h3" style="font-size:12.5px; margin:14px 0 8px;">Payment Method</div>
+      <div class="tabbar" style="margin-bottom:16px;">
+        <button class="tab ${ps.method==='card'?'active':''}" data-action="setPayMethod" data-method="card">${ICONS.card} Card</button>
+        <button class="tab ${ps.method==='cash'?'active':''}" data-action="setPayMethod" data-method="cash">${ICONS.cash} Cash</button>
+      </div>
+      <div class="cart-totals">
+        ${o.items.map(it=>`<div class="row"><span class="muted">${it.qty}× ${it.name}</span><span>${money(lineTotal(it))}</span></div>`).join('')}
+        <div class="row" style="border-top:1px dashed var(--border-soft); padding-top:8px; margin-top:4px;"><span class="muted">Subtotal</span><span>${money(subtotal)}</span></div>
+        ${o.discount>0?`<div class="row"><span class="muted">Discount</span><span style="color:var(--danger)">-${money(o.discount)}</span></div>`:''}
+        <div class="row"><span class="muted">Tax</span><span>${money(tax)}</span></div>
+        <div class="row"><span class="muted">Tip</span><span>${money(tip)}</span></div>
+        <div class="row total"><span>Total Due</span><span>${money(total)}</span></div>
+        ${ps.splitMode==='even'?`<div class="row" style="margin-top:6px;"><span class="muted">Per guest (${ps.splitCount})</span><span>${money(perGuest)}</span></div>`:''}
+      </div>
+    </div>
+    <div class="sheet-foot">
+      <button class="btn btn-secondary btn-block" data-action="closeSheet">Cancel</button>
+      <button class="btn btn-primary btn-block" data-action="completePayment">${ICONS.check} Charge ${money(total)}</button>
+    </div>
+  `;
+}
+function refreshPaymentSheet(){ $('#sheet-root .sheet').innerHTML = paymentSheetHtml(getOrder(currentOrderId)); }
+function completePayment(){
+  const o = getOrder(currentOrderId);
+  const ps = payState;
+  const subtotal = o.items.reduce((s,it)=>s+lineTotal(it),0);
+  const taxable = Math.max(0, subtotal-(o.discount||0));
+  const tax = taxable*STATE.restaurant.taxRate;
+  const tip = ps.tipMode==='pct'? taxable*ps.tipPct : (ps.tipMode==='custom'? ps.tipAmt : 0);
+  const total = taxable+tax+tip;
+  STATE.completedOrders.push({
+    id:o.id, ts:Date.now(),
+    items:o.items.map(it=>({name:it.name, category:findMenuItem(it.menuItemId).category, qty:it.qty, price:it.basePrice+it.modPrice})),
+    subtotal:taxable, tax, tip, total, paymentMethod:ps.method, server:o.server,
+  });
+  if(o.tableId){ const t=getTable(o.tableId); t.status='dirty'; t.orderId=null; }
+  delete STATE.orders[o.id];
+  closeSheet();
+  toast('Payment of '+money(total)+' complete');
+  currentOrderId=null; view='tables';
+  renderApp(); PineSync.push(STATE);
+}
+
+/* ============================================================
+   VIEW: KITCHEN
+   ============================================================ */
+function renderKitchenView(){
+  const stations = ['All', ...new Set(STATE.menu.categories.map(c=>c.station))];
+  if(!stations.includes(activeStation)) activeStation='All';
+  let tickets = Object.values(STATE.orders)
+    .filter(o=>o.status==='open' && o.items.some(it=>it.status==='fired'||it.status==='ready'))
+    .map(o=>{
+      const items = o.items.filter(it=>(it.status==='fired'||it.status==='ready') && (activeStation==='All'||it.station===activeStation));
+      const fired = o.items.filter(it=>it.firedAt).map(it=>it.firedAt);
+      return {order:o, items, earliestFired: fired.length?Math.min(...fired):Date.now()};
+    })
+    .filter(t=>t.items.length>0);
+  tickets.sort((a,b)=>a.earliestFired-b.earliestFired);
+
+  return `
+    <div class="cat-chips">${stations.map(s=>`<button class="cat-chip ${activeStation===s?'active':''}" data-action="setStation" data-station="${s}">${s}</button>`).join('')}</div>
+    ${tickets.length? tickets.map(t=>kdsCard(t)).join('') : `<div class="empty-state">${ICONS.kitchen}<div class="h3">All caught up</div><div style="font-size:12.5px; margin-top:4px;">No tickets waiting${activeStation==='All'?'':' on '+activeStation}.</div></div>`}
+  `;
+}
+function kdsCard(t){
+  const o = t.order;
+  const mins = Math.floor((Date.now()-t.earliestFired)/60000);
+  let urgency='ok'; if(mins>=12) urgency='late'; else if(mins>=8) urgency='warn';
+  const label = o.tableId? 'Table '+tableLabel(o.tableId) : 'Takeout · '+(o.customerName||'Guest');
+  return `<div class="hh-ticket ${urgency!=='ok'?urgency:''}">
+    <div class="head">
+      <div><div class="tname">${label}</div><div class="tno">#${o.id} · ${o.type==='takeout'?'TAKEOUT':(o.server||'').split(' ')[0]}</div></div>
+      <div class="timer ${urgency}">${mins}m</div>
+    </div>
+    <div class="items">
+      ${t.items.map(it=>{
+        const modsText = it.mods.map(m=>m.name).join(', ');
+        return `<div class="item ${it.status==='ready'?'ready':''}">
+          <div class="q">${it.qty}×</div>
+          <div class="body"><div class="nm">${it.name}</div>${modsText?`<div class="mods">${modsText}</div>`:''}${it.notes?`<div class="nts">${it.notes}</div>`:''}</div>
+          ${it.status==='fired'?`<button class="btn btn-secondary" style="padding:8px 12px; font-size:12px;" data-action="bumpItem" data-order-id="${o.id}" data-uid="${it.uid}">Ready</button>`:`<span class="badge badge-green">Ready</span>`}
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="foot"><button class="btn btn-teal btn-block" data-action="bumpTicket" data-order-id="${o.id}">${ICONS.check} Bump All &amp; Serve</button></div>
+  </div>`;
+}
+function bumpItem(orderId, uidStr){
+  const o = getOrder(orderId); const it = o.items.find(i=>i.uid===uidStr);
+  it.status='ready'; renderApp(); PineSync.push(STATE);
+}
+function bumpTicket(orderId){
+  const o = getOrder(orderId);
+  o.items.forEach(it=>{ if(it.status==='fired'||it.status==='ready') it.status='served'; });
+  toast('Ticket #'+orderId+' bumped and served');
+  renderApp(); PineSync.push(STATE);
+}
+
+/* ============================================================
+   VIEW: MY SALES + CLOCK OUT
+   ============================================================ */
+function renderMySales(){
+  const me = STATE.currentStaff;
+  const mine = STATE.completedOrders.filter(o=>o.server===me.name);
+  const cutoff = mySalesRange==='today' ? dayStart(new Date()) : dayStart(new Date(Date.now()-6*86400000));
+  const orders = mine.filter(o=>o.ts>=cutoff);
+  const sorted = [...orders].sort((a,b)=>b.ts-a.ts);
+  const totalSales = orders.reduce((s,o)=>s+o.total,0);
+  const totalTips = orders.reduce((s,o)=>s+(o.tip||0),0);
+  const tipPct = orders.length? (orders.reduce((s,o)=>s+(o.subtotal? o.tip/o.subtotal:0),0)/orders.length)*100 : 0;
+  const isTipped = (me.role==='Server'||me.role==='Bartender');
+  const tipOutsReceived = STATE.tipOuts.filter(t=>t.toId===me.id && t.ts>=cutoff).sort((a,b)=>b.ts-a.ts);
+  const tipOutsGiven = STATE.tipOuts.filter(t=>t.fromId===me.id && t.ts>=cutoff).sort((a,b)=>b.ts-a.ts);
+
+  return `
+    <div class="kpi-2x2">
+      <div class="kpi-tile"><div class="lbl">My Sales</div><div class="val">${money(totalSales)}</div></div>
+      <div class="kpi-tile"><div class="lbl">My Tips</div><div class="val">${money(totalTips)}</div></div>
+      <div class="kpi-tile"><div class="lbl">Orders Served</div><div class="val">${orders.length}</div></div>
+      <div class="kpi-tile"><div class="lbl">Avg Tip %</div><div class="val">${tipPct.toFixed(1)}%</div></div>
+    </div>
+    <div class="tabbar" style="margin-bottom:12px;">
+      <button class="tab ${mySalesRange==='today'?'active':''}" data-action="setMySalesRange" data-range="today">Today</button>
+      <button class="tab ${mySalesRange==='week'?'active':''}" data-action="setMySalesRange" data-range="week">Last 7 Days</button>
+    </div>
+    <div class="hh-section-title">My Orders</div>
+    ${sorted.length? sorted.map(o=>`
+      <div class="cart-line">
+        <div class="top"><div class="name">#${o.id} · ${fmtTime(o.ts)}</div><div class="price">${money(o.total)}</div></div>
+        <div class="mods">${o.items.length} item${o.items.length===1?'':'s'} · Tip ${money(o.tip)} · ${o.paymentMethod==='card'?'Card':'Cash'}</div>
+      </div>`).join('') : `<div class="empty-state" style="padding:24px;">No orders yet</div>`}
+    ${isTipped?`
+    <div class="hh-section-title" style="margin-top:18px;">Tip-Outs Given</div>
+    ${tipOutsGiven.length? tipOutsGiven.map(t=>`<div class="cart-line"><div class="top"><div class="name">To ${t.to}</div><div class="price">${money(t.amount)}</div></div><div class="mods">${fmtTime(t.ts)}</div></div>`).join('') : `<div class="empty-state" style="padding:18px;">None yet</div>`}
+    `:''}
+    <div class="hh-section-title" style="margin-top:18px;">Tip-Outs Received</div>
+    ${tipOutsReceived.length? tipOutsReceived.map(t=>`<div class="cart-line"><div class="top"><div class="name">From ${t.from}</div><div class="price" style="color:var(--success)">${money(t.amount)}</div></div><div class="mods">${fmtTime(t.ts)}</div></div>`).join('') : `<div class="empty-state" style="padding:18px;">None yet</div>`}
+  `;
+}
+
+/* ---- Clock out sheet ---- */
+function openClockOut(){
+  const s = STATE.currentStaff;
+  if(!s.clockedIn){
+    s.clockedIn=true; s.clockInTime=Date.now();
+    toast(s.name+' clocked in');
+    renderApp(); PineSync.push(STATE);
+    return;
+  }
+  const {byDept, totalTips, totalSales, orderCount} = shiftSalesByDept(s);
+  const gross = DEPARTMENTS.reduce((sum,d)=>sum+byDept[d],0);
+  const shiftLen = s.clockInTime? fmtElapsed(s.clockInTime) : '—';
+  const isTipped = (s.role==='Server'||s.role==='Bartender');
+  const eligible = STATE.staff.filter(m=>m.clockedIn && m.id!==s.id && m.role!=='Manager' && m.role!=='Cook');
+
+  showSheet(`
+    <div class="sheet-head"><div class="h3">Clock Out — ${s.name}</div><button class="sheet-close" data-action="closeSheet">${ICONS.close}</button></div>
+    <div class="sheet-body">
+      <div class="panel panel-pad" style="background:var(--surface-2); margin-bottom:14px;">
+        <div class="cart-totals" style="margin-top:0;">
+          <div class="row"><span class="muted">Shift Length</span><span class="mono">${shiftLen}</span></div>
+          <div class="row"><span class="muted">Orders Served</span><span class="mono">${orderCount}</span></div>
+          <div class="row total"><span>Total Sales</span><span class="mono">${money(totalSales)}</span></div>
+          ${isTipped?`<div class="row"><span class="muted">Tips Earned</span><span class="mono" style="color:var(--success); font-weight:800;">${money(totalTips)}</span></div>`:''}
+        </div>
+      </div>
+      <div class="h3" style="font-size:12.5px; margin-bottom:8px;">Sales by Department</div>
+      ${DEPARTMENTS.map(d=>`
+        <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px;">
+          <span><span class="color-dot" style="background:${DEPT_COLORS[d]}"></span>${d}</span><span class="mono">${money(byDept[d])}</span>
+        </div>
+        <div style="height:6px; border-radius:4px; background:var(--surface-3); margin-bottom:10px; overflow:hidden;"><div style="height:100%; width:${gross?(byDept[d]/gross*100):0}%; background:${DEPT_COLORS[d]}"></div></div>
+      `).join('')}
+      ${isTipped?`
+        <div class="h3" style="font-size:12.5px; margin:16px 0 4px;">Tip Out to Teammates (optional)</div>
+        <div class="muted" style="font-size:11.5px; margin-bottom:10px;">If a guest left cash for the team, check who was on shift with you and send them a share — directly to that person.</div>
+        ${eligible.length? `
+        <div style="display:flex; gap:8px; margin-bottom:12px;">
+          <button class="btn btn-secondary" style="flex:1; font-size:12px; padding:9px 10px;" data-action="splitTipEvenly">${ICONS.plus} Split Evenly</button>
+          <button class="btn btn-secondary" style="flex:1; font-size:12px; padding:9px 10px;" data-action="clearTipOuts">Clear</button>
+        </div>
+        ${eligible.map(m=>`
+          <div class="cart-line" style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 0;">
+            <label style="display:flex; align-items:center; gap:10px; flex:1; min-width:0; cursor:pointer;">
+              <input type="checkbox" class="tipout-check" data-recipient-id="${m.id}" data-change="recalcTipOutSummary" style="width:18px; height:18px; accent-color:var(--primary); flex-shrink:0;">
+              <div class="staff-avatar" style="background:${m.color}; width:30px; height:30px; font-size:11px; flex-shrink:0;">${initials(m.name)}</div>
+              <div style="min-width:0;"><div class="name" style="font-size:13px;">${m.name}</div><div class="mods">${m.role}</div></div>
+            </label>
+            <div style="display:flex; align-items:center; gap:4px; background:var(--surface-2); border:1.5px solid var(--border); border-radius:var(--r-sm); padding:6px 10px;">
+              <span class="mono" style="font-size:13px; color:var(--ink-faint);">$</span>
+              <input type="number" class="tipout-amount" data-recipient-id="${m.id}" data-change="recalcTipOutSummary" min="0" step="0.01" placeholder="0.00" style="width:56px; border:none; background:none; color:var(--ink); font-family:var(--font-mono); font-size:13px; outline:none; text-align:right;">
+            </div>
+          </div>`).join('')}
+        <div id="tipout-summary" style="display:flex; justify-content:space-between; align-items:center; padding:10px 12px; margin-top:8px; border-radius:var(--r-sm); background:var(--surface-2); border:1.5px solid var(--border);">
+          <span class="muted" style="font-size:12px;">Allocated</span>
+          <span class="mono" style="font-size:13px; font-weight:800;">${money(0)} of ${money(totalTips)}</span>
+        </div>
+        ` : `<div class="empty-state" style="padding:14px;">No other teammates on shift right now.</div>`}
+      `:''}
+    </div>
+    <div class="sheet-foot">
+      <button class="btn btn-secondary btn-block" data-action="closeSheet">Cancel</button>
+      <button class="btn btn-primary btn-block" data-action="confirmClockOut">${ICONS.check} Confirm Clock Out</button>
+    </div>
+  `);
+}
+function recalcTipOutSummary(){
+  const s = STATE.currentStaff;
+  const {totalTips} = shiftSalesByDept(s);
+  let allocated = 0;
+  $$('.tipout-amount').forEach(inp=>{ allocated += Number(inp.value)||0; });
+  const summary = $('#tipout-summary');
+  if(!summary) return;
+  const over = allocated > totalTips + 0.001;
+  summary.style.borderColor = over ? 'var(--danger)' : 'var(--border)';
+  summary.querySelector('span:last-child').innerHTML = `<span style="${over?'color:var(--danger);':''}">${money(allocated)}</span> of ${money(totalTips)}`;
+}
+function splitTipEvenly(){
+  const s = STATE.currentStaff;
+  const {totalTips} = shiftSalesByDept(s);
+  const checked = $$('.tipout-check:checked');
+  if(!checked.length){ toast('Check off who was on shift with you first', ICONS.bell); return; }
+  const already = (()=>{ let sum=0; $$('.tipout-amount').forEach(inp=>{ if(!checked.some(c=>c.dataset.recipientId===inp.dataset.recipientId)) sum += Number(inp.value)||0; }); return sum; })();
+  const pool = Math.max(0, totalTips - already);
+  const share = checked.length ? Math.round((pool/checked.length)*100)/100 : 0;
+  checked.forEach(chk=>{
+    const inp = $(`.tipout-amount[data-recipient-id="${chk.dataset.recipientId}"]`);
+    if(inp) inp.value = share.toFixed(2);
+  });
+  recalcTipOutSummary();
+}
+function clearTipOuts(){
+  $$('.tipout-check').forEach(c=>c.checked=false);
+  $$('.tipout-amount').forEach(inp=>inp.value='');
+  recalcTipOutSummary();
+}
+function confirmClockOut(){
+  const s = STATE.currentStaff;
+  const tipOutMsgs = [];
+  $$('.tipout-amount').forEach(inp=>{
+    const amount = Number(inp.value)||0;
+    if(amount>0){
+      const recipient = STATE.staff.find(m=>m.id===Number(inp.dataset.recipientId));
+      if(recipient){
+        STATE.tipOuts.push({id:STATE.nextUid++, from:s.name, fromId:s.id, to:recipient.name, toId:recipient.id, amount, ts:Date.now()});
+        tipOutMsgs.push(money(amount)+' to '+recipient.name);
+      }
+    }
+  });
+  s.clockedIn=false;
+  closeSheet();
+  let msg = s.name+' clocked out';
+  if(tipOutMsgs.length) msg += ' · Tipped out '+tipOutMsgs.join(', ');
+  toast(msg);
+  renderApp(); PineSync.push(STATE);
+}
+
+/* ============================================================
+   ACTIONS (event delegation)
+   ============================================================ */
+const ACTIONS = {
+  pinKey:(el)=>pinKey(el.dataset.key),
+  logout:()=>logout(),
+  goTab:(el)=>{ view=el.dataset.tab; if(view!=='order') currentOrderId=null; renderApp(); },
+  openTable:(el)=>openTable(Number(el.dataset.id)),
+  seatGuestsDelta:(el)=>seatGuestsDelta(Number(el.dataset.delta)),
+  seatTable:(el)=>seatTable(Number(el.dataset.id)),
+  openOrder:(el)=>{ currentOrderId=Number(el.dataset.id); renderApp(); },
+  backToTickets:()=>{ currentOrderId=null; renderApp(); },
+  startTakeout:()=>{
+    showSheet(`
+      <div class="sheet-head"><div class="h3">New Takeout Order</div><button class="sheet-close" data-action="closeSheet">${ICONS.close}</button></div>
+      <div class="sheet-body">
+        <div class="field"><label>Guest Name</label><input type="text" id="takeout-name" placeholder="e.g. Jordan Smith"></div>
+        <div class="field"><label>Phone (optional)</label><input type="text" id="takeout-phone" placeholder="(206) 555-0100"></div>
+      </div>
+      <div class="sheet-foot">
+        <button class="btn btn-secondary btn-block" data-action="closeSheet">Cancel</button>
+        <button class="btn btn-primary btn-block" data-action="confirmTakeout">Start Order</button>
+      </div>
+    `);
+  },
+  confirmTakeout:()=>{
+    const name = $('#takeout-name').value.trim() || 'Guest';
+    const phone = $('#takeout-phone').value.trim();
+    const id = STATE.nextOrderId++;
+    STATE.orders[id]={id, tableId:null, server:STATE.currentStaff.name, guests:1, type:'takeout', status:'open', customerName:name, phone, items:[], openedAt:Date.now(), discount:0, tip:0};
+    closeSheet();
+    currentOrderId=id; renderApp(); PineSync.push(STATE);
+  },
+  setMenuCat:(el)=>{ activeMenuCat=el.dataset.cat; renderApp(); },
+  quickAdd:(el)=>{
+    const o = getOrder(currentOrderId); if(!o) return;
+    addItemToOrder(o, Number(el.dataset.itemId), 1, [], '');
+    renderApp(); PineSync.push(STATE);
+  },
+  openModifierSheet:(el)=>openModifierSheet(Number(el.dataset.itemId)),
+  toggleModOpt:(el)=>toggleModOpt(el),
+  modQtyDelta:(el)=>modQtyDelta(Number(el.dataset.delta)),
+  confirmAddModified:(el)=>confirmAddModified(Number(el.dataset.itemId)),
+  openCartSheet:()=>openCartSheet(),
+  adjustQty:(el)=>adjustQty(el.dataset.uid, Number(el.dataset.delta)),
+  removeItem:(el)=>removeItem(el.dataset.uid),
+  sendToKitchen:()=>sendToKitchen(),
+  openPaymentSheet:()=>openPaymentSheet(),
+  setSplitMode:(el)=>{ payState.splitMode=el.dataset.mode; refreshPaymentSheet(); },
+  splitCountDelta:(el)=>{ payState.splitCount=Math.max(1,payState.splitCount+Number(el.dataset.delta)); refreshPaymentSheet(); },
+  setTip:(el)=>{
+    if(el.dataset.mode==='pct'){ payState.tipMode='pct'; payState.tipPct=Number(el.dataset.val); }
+    else if(el.dataset.mode==='none'){ payState.tipMode='none'; payState.tipPct=0; payState.tipAmt=0; }
+    else { payState.tipMode='custom'; }
+    refreshPaymentSheet();
+  },
+  setCustomTip:(el)=>{ payState.tipAmt=Number(el.value)||0; refreshPaymentSheet(); },
+  setPayMethod:(el)=>{ payState.method=el.dataset.method; refreshPaymentSheet(); },
+  completePayment:()=>completePayment(),
+  setStation:(el)=>{ activeStation=el.dataset.station; renderApp(); },
+  bumpItem:(el)=>bumpItem(Number(el.dataset.orderId), el.dataset.uid),
+  bumpTicket:(el)=>bumpTicket(Number(el.dataset.orderId)),
+  setMySalesRange:(el)=>{ mySalesRange=el.dataset.range; renderApp(); },
+  openClockOut:()=>openClockOut(),
+  confirmClockOut:()=>confirmClockOut(),
+  splitTipEvenly:()=>splitTipEvenly(),
+  clearTipOuts:()=>clearTipOuts(),
+  recalcTipOutSummary:()=>recalcTipOutSummary(),
+  closeSheet:()=>closeSheet(),
+  stop:(el,e)=>e.stopPropagation(),
+};
+document.addEventListener('click', e=>{
+  const el = e.target.closest('[data-action]');
+  if(!el || !el.dataset.action) return;
+  const fn = ACTIONS[el.dataset.action];
+  if(fn) fn(el, e);
+});
+document.addEventListener('change', e=>{
+  const el = e.target.closest('[data-change]');
+  if(!el) return;
+  const fn = ACTIONS[el.dataset.change];
+  if(fn) fn(el, e);
+});
+$('#clockout-btn').addEventListener('click', ()=>openClockOut());
+
+/* ============================================================
+   INIT
+   ============================================================ */
+function connectionBadge(state){
+  const el = $('#conn-badge');
+  el.classList.toggle('offline', !state);
+  el.querySelector('.conn-label').textContent = state ? 'Live' : 'Offline';
+}
+/* Guest alerts (check requests / Pay & Go) — toast newly arrived ones. */
+let lastGuestNotifId = 0;
+function baselineGuestNotifs(){ lastGuestNotifId = Math.max(0, ...STATE.notifications.map(n=>n.id||0)); }
+function announceGuestNotifs(){
+  const fresh = STATE.notifications.filter(n=>(n.id||0)>lastGuestNotifId && (n.kind==='payandgo'||n.kind==='check_request'||n.kind==='need_server'));
+  if(!fresh.length){ baselineGuestNotifs(); return; }
+  fresh.forEach(n=>toast(n.text, n.kind==='payandgo' ? ICONS.checkCircle : ICONS.bell));
+  baselineGuestNotifs();
+}
+
+async function initApp(){
+  try{
+    const shared = await PineSync.loadState();
+    PineSync.merge(STATE, shared);
+    baselineGuestNotifs();
+  }catch(err){ console.error('[Handheld] failed to load state', err); }
+
+  const savedId = Number(localStorage.getItem('pine-hh-staff-id'));
+  if(savedId){
+    const found = STATE.staff.find(s=>s.id===savedId);
+    if(found) STATE.currentStaff = found;
+  }
+
+  PineSync.connect((shared)=>{
+    PineSync.merge(STATE, shared);
+    announceGuestNotifs();
+    if(STATE.currentStaff) renderApp(); else renderLogin();
+  }, {
+    onConnect: ()=>connectionBadge(true),
+    onDisconnect: ()=>connectionBadge(false),
+  });
+
+  if(STATE.currentStaff){
+    $('#login-screen').classList.add('hidden');
+    $('#app').classList.add('active');
+    view = tabsForRole(STATE.currentStaff.role)[0].id;
+    renderApp();
+  } else {
+    renderLogin();
+  }
+  connectionBadge(PineSync.connected);
+}
+initApp();
+</script>
+</body>
+</html>
